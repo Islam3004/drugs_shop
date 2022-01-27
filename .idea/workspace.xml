@@ -1,24 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e5141da3-0cca-449a-b215-6bd765a66851" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/backend/apps/shop/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/apps/shop/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/backend/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/apps/shop/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/backend/asgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/config/asgi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/backend/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/config/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/backend/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/backend/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/config/wsgi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/config/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/config/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/manage.py" beforeDir="false" afterPath="$PROJECT_DIR$/manage.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/products/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/apps/shop/migrations/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/products/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/apps/shop/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/products/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/apps/shop/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/products/migrations/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/config/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/products/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/apps/shop/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/products/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/apps/shop/tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/products/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/products/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/apps/shop/views.py" afterDir="false" />
-    </list>
+    <list default="true" id="e5141da3-0cca-449a-b215-6bd765a66851" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
