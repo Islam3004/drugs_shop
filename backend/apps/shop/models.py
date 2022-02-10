@@ -1,45 +1,48 @@
 from django.db import models
 
 # Create your models here.
-class Category(models.Model):
-    name = models.CharField("Название", max_length = 50, unique=True)
-    slug = models.SlugField(max_length = 50, unique=True)
+class Categories(models.Model):
+    title = models.CharField('Название', max_length=150, unique=True)
+    slug = models.SlugField(max_length=150, unique=True)
 
     class Meta:
-        verbose_name = "Категория"
-        verbose_name_plural = "Категории"
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
 
     def __str__(self):
-        return self.name
+        return self.title
 
-class SubCategory(models.Model):
-    name = models.CharField("Название", max_length = 50)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="Категория")
-    slug = models.SlugField(max_length=50, unique=True)
+
+class Products(models.Model):
+    title = models.CharField('Название', max_length=150, unique=True)
+    quantity = models.PositiveIntegerField('Количество')
+    image = models.ImageField(upload_to='products/')
+    description = models.TextField('Описание')
+    price = models.DecimalField(verbose_name='Цена', max_digits=100, decimal_places=2)
+    discount = models.PositiveSmallIntegerField('Скидка', null=True, blank=True, default=0)
+    category = models.ForeignKey(Categories, on_delete=models.PROTECT, verbose_name='Категория')
+    favorites = models.BooleanField(default=False)
+    status = models.BooleanField(default=True)
+    created = models.DateTimeField('Дата создания', auto_now_add=True)
 
     class Meta:
-        verbose_name = "Подкатегория"
-        verbose_name_plural = "Подкатегория"
+        ordering = ['-discount', '-favorites']
+        verbose_name = 'Товар'
+        verbose_name_plural = 'Товары'
 
     def __str__(self):
-        return self.name
+        return self.title
 
-class Product(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.PROTECT)
-    subcategory = models.ForeignKey(SubCategory, on_delete=models.PROTECT)
-    name = models.CharField(verbose_name="Название", max_length=200)
-    description = models.TextField(verbose_name="Название")
-    price = models.DecimalField(verbose_name="Цена", max_digits=10, decimal_places=2)
-    image = models.ImageField("Фото", upload_to="products/images/")
-    is_active = models.BooleanField("Активный", default=True)
-    created = models.DateTimeField("Дата создания", auto_now_add=True)
-    updated = models.DateTimeField("Дата обновления", auto_now=True)
+  
+class Reviews(models.Model):
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+    text = models.TextField('Комметарий')
+    created = models.DateTimeField('Дата создания', auto_now_add=True)
 
     class Meta:
-        ordering = ["-created"]
-        verbose_name = "Товар"
-        verbose_name_plural = "Товары"
+        ordering = ['-created']
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'
 
     def __str__(self):
-        return self.name
-
+        return self.created
