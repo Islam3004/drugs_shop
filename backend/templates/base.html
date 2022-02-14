@@ -55,6 +55,12 @@
 					<ul class="header-links pull-right">
 						<li><a href="#"><i class="fa fa-dollar"></i> USD</a></li>
 						<li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li>
+						{% if request.user.is_authenticated %}
+						<li><a href="#"><i class="fa fa-user-o"></i>{{user.username}}</a></li>
+						<li><a href="{% url 'logout' %}">Logout</a></li>
+						{% else %}
+						<li><a href="{% url 'login' %}"><i class="fa fa-user-o"></i>Login</a></li>
+						{% endif %}
 					</ul>
 				</div>
 			</div>
