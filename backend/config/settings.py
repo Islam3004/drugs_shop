@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'backend.apps.shop',
     'backend.apps.user',
+    'backend.apps.cart',
+    'backend.apps.map',
+    'backend.apps.curier',
 ]
 
 MIDDLEWARE = [
