@@ -14,7 +14,7 @@ class Categories(models.Model):
 
 
 class SubCategories(models.Model):
-    name = models.CharField("Название", max_length = 50)
+    title = models.CharField("Название", max_length = 50)
     category = models.ForeignKey(Categories, on_delete=models.CASCADE, verbose_name="Категория")
     slug = models.SlugField(max_length=50, unique=True)
 
