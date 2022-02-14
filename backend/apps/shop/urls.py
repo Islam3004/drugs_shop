@@ -1,6 +1,7 @@
 from django.urls import path, include
-from backend.apps.shop import views
+from .views import *
+
 urlpatterns = [
-    path('', views.AboutView.as_view(), name='index'),
-    path('products', views.ProductView.as_view(), name='products'),
+    path('', ProductListView.as_view(), name='product_list_url'), 
+    path('product/<int:pk>', ProductDetailView.as_view(), name='product_detail_url'),
 ]
