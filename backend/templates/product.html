@@ -38,7 +38,7 @@
 				<div class="col-md-5 col-md-push-2">
 					<div id="product-main-img">
 						<div class="product-preview">
-							<img src="./img/product01.png" alt="">
+							<img src="{{ product.image.url }}" alt="">
 						</div>
 
 						<div class="product-preview">
@@ -93,24 +93,10 @@
 							<a class="review-link" href="#">10 Review(s) | Add your review</a>
 						</div>
 						<div>
-							<h3 class="product-price">{{ product.price }}<del class="product-old-price">$990.00</del></h3>
-							<span class="product-available">In Stock</span>
+							<h3 class="product-price">{{ product.price }}</h3>
 						</div>
 						<p>{{ product.description }}</p>
-						<div class="product-options">
-							<label>
-								Size
-								<select class="input-select">
-									<option value="0">X</option>
-								</select>
-							</label>
-							<label>
-								Color
-								<select class="input-select">
-									<option value="0">Red</option>
-								</select>
-							</label>
-						</div>
+
 
 						<div class="add-to-cart">
 							<div class="qty-label">

@@ -3,6 +3,13 @@ from django.views.generic import ListView, DetailView
 from .models import Products, Reviews, Categories
 from .forms import ReviewsForm
 # Create your views here.
+from .models import Products
+
+
+class HomeView(ListView):
+    template_name = 'index.html'
+    queryset = Products.objects.filter(status=True)
+
 
 class ProductListView(ListView):
     template_name = 'store.html'
@@ -16,11 +23,12 @@ class ProductDetailView(DetailView):
     model = Products
     context_object_name = 'product'
 
-    def get_context_data(self, **kwargs):
-        context = super(ProductDetailView, self).get_context_data(**kwargs)
-        related_product = Products.ogject.filter(status=True, category=self.object.category)
-        context['related_product'] = related_product
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super(ProductDetailView, self).get_context_data(**kwargs)
+    #     related_product = Products.object.filter(status=True, category=self.object.category)
+    #     context['related_product'] = related_product
+    #     return context
+
     
     
 

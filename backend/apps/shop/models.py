@@ -23,7 +23,7 @@ class SubCategories(models.Model):
         verbose_name_plural = "Подкатегория"
 
     def str(self):
-        return self.name
+        return self.title
 
 
 class Products(models.Model):
@@ -34,7 +34,7 @@ class Products(models.Model):
     price = models.DecimalField(verbose_name='Цена', max_digits=100, decimal_places=2)
     discount = models.PositiveSmallIntegerField('Скидка', null=True, blank=True, default=0)
     category = models.ForeignKey(Categories, on_delete=models.PROTECT, verbose_name='Категория')
-    subcategory = models.ForeignKey(SubCategories, on_delete=models.PROTECT, verbose_name='СубКатегория', null=True)
+    subcategory = models.ForeignKey(SubCategories, on_delete=models.PROTECT, verbose_name='СубКатегория', null=True, blank=True)
     favorites = models.BooleanField(default=False)
     status = models.BooleanField(default=True)
     created = models.DateTimeField('Дата создания', auto_now_add=True)

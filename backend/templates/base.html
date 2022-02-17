@@ -84,9 +84,11 @@
 						<!-- SEARCH BAR -->
 						<div class="col-md-6">
 							<div class="header-search">
-								<form>
-									<select class="input-select">
-										<option value="0">Категории</option>
+								<form style="display: flex">
+									<select class="input-select" value="id">										<option disabled>Категории</option>
+										{% for category in categories%}
+										<option value="{{category.title}}">{{ category.title}}</option>
+										{% endfor %}
 									</select>
 									<input class="input" placeholder="Search here">
 									<button class="search-btn">Search</button>
@@ -179,13 +181,9 @@
 				<div id="responsive-nav">
 					<!-- NAV -->
 					<ul class="main-nav nav navbar-nav">
-						<li class="active"><a href="#">Home</a></li>
-						<li><a href="#">Hot Deals</a></li>
-						<li><a href="#">Categories</a></li>
-						<li><a href="#">Laptops</a></li>
-						<li><a href="#">Smartphones</a></li>
-						<li><a href="#">Cameras</a></li>
-						<li><a href="#">Accessories</a></li>
+						<li class="active"><a href="{% url 'index_url' %}">Главная</a></li>
+						<li><a href="{% url 'products_list_url' %}">Все Товары</a></li>
+						<li><a href="#">Новинки</a></li>
 					</ul>
 					<!-- /NAV -->
 				</div>
