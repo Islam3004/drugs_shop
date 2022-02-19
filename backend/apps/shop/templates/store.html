@@ -26,9 +26,12 @@
 							<div class="input-checkbox">
 								<input type="checkbox" id="category-2">
 								<label for="category-2">
-									<span></span>
+									<a href="{% url 'category_list' category.slug %}">
+											<span></span>
 									{{ category.title }}
 									<small></small>
+									</a>
+
 								</label>
 							</div>
 							{% endfor %}
@@ -114,18 +117,18 @@
 							<div class="col-md-4 col-xs-6">
 								<div class="product">
 									<div class="product-img">
-										<img src="{{ product.image.url }}" alt="404">
-										<div class="product-label">
-											<span class="sale">{{ product.discount }}</span>
-										</div>
+										<img class="image" src="{{ product.image.url }}" alt="404">
+<!--										<div class="product-label">-->
+<!--											<span class="sale">{{ product.discount }}</span>-->
+<!--										</div>-->
 									</div>
 									<div class="product-body">
 										<p class="product-category">{{ product.category }}</p>
 										<h3 class="product-name"><a href="{% url 'product_detail_url' product.id %}">{{ product.title }}</a></h3>
 										{% if product.discount %}
-											<h4 class="product-price">{{ product.price }}<del class="product-old-price">{{ product.price }}</del></h4>
+											<h4 class="product-price">{{ product.price }} сом<del class="product-old-price">{{ product.price }} сом</del></h4>
 										{% else %}
-											<h4 class="product-price">{{ product.price }}</h4>
+											<h4 class="product-price">{{ product.price }} сом</h4>
 										{% endif %}
 										<div class="product-rating">
 											<i class="fa fa-star"></i>
