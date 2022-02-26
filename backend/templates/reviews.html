@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+	Reviews
+{% endblock %}
+
+{% block content %}
+<div class="">
+	<div id="reviews">
+		<ul class="reviews">
+			{% for review in reviews %}
+			<li>
+				<div class="review-heading">
+					<h5 class="name">{{ review.name }}</h5>
+					<p class="date">{{ review.created }}</p>
+					<div class="review-rating">
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star-o empty"></i>
+					</div>
+				</div>
+				<div class="review-body">
+					<p>{{ review.text }}</p>
+				</div>
+			</li>
+			{% endfor %}
+			</ul>
+		</div>
+</div>
+
+
+{% endblock %}

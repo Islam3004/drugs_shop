@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e5141da3-0cca-449a-b215-6bd765a66851" name="Changes" comment="" />
+    <list default="true" id="e5141da3-0cca-449a-b215-6bd765a66851" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/backend/apps/shop/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/apps/shop/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/apps/shop/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/apps/shop/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/apps/shop/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/apps/shop/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/apps/shop/templates/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/apps/shop/templates/product.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/apps/shop/templates/store.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/apps/shop/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/apps/shop/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/apps/shop/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/apps/shop/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/apps/user/templates/login.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/apps/user/templates/register.html" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

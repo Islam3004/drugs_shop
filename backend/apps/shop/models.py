@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 class Categories(models.Model):
     title = models.CharField('Название', max_length=150, unique=True)
@@ -47,11 +47,39 @@ class Products(models.Model):
     def __str__(self):
         return self.title
 
+
+class RatingStar(models.Model):
+    value = models.SmallIntegerField("Значение", default=0)
+
+    def __str__(self):
+        return f'{self.value}'
+
+    class Meta:
+        verbose_name = "Звезда к рейтингу"
+        verbose_name_plural = "Звезды к рейтингу"
+        ordering = ["-value"]
+
+
+class Rating(models.Model):
+    ip = models.CharField("IP Адрес", max_length=15)
+    star = models.ForeignKey(RatingStar, on_delete=models.CASCADE, verbose_name="Звезда")
+    products = models.ForeignKey(Products, on_delete=models.CharField, verbose_name="Продукт")
+
+    def __str__(self):
+        return f"{self.star} - {self.movie}"
+
+    class Meta:
+        verbose_name = "Рейтинг"
+        verbose_name_plural = "Рейтинги"
+
   
 class Reviews(models.Model):
+    email = models.EmailField()
+    name = models.CharField("Имя", max_length=100)
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
     text = models.TextField('Комметарий')
     created = models.DateTimeField('Дата создания', auto_now_add=True)
+    star = models.ForeignKey(RatingStar, on_delete=models.CharField, verbose_name="Звезды", null=True)
 
     class Meta:
         ordering = ['-created']
@@ -59,4 +87,4 @@ class Reviews(models.Model):
         verbose_name_plural = 'Отзывы'
 
     def __str__(self):
-        return self.created
+        return str(self.email)

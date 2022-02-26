@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Products, Categories, SubCategories
+from .models import Products, Categories, SubCategories, RatingStar, Reviews, Rating
 # Register your models here.
 
 
@@ -40,3 +40,7 @@ class ProductAdmin(admin.ModelAdmin):
         "status",
         "created",
     )
+
+admin.site.register(RatingStar)
+admin.site.register(Reviews)
+admin.site.register(Rating)

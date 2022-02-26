@@ -980,6 +980,17 @@ textarea.input {
   transition: 0.2s all;
 }
 
+product-btns > .quick-view {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background: transparent;
+  border: none;
+  -webkit-transition: 0.2s all;
+  transition: 0.2s all;
+}
+
 .product .product-body .product-btns>button:hover {
   background-color: #E4E7ED;
   color: #D10024;

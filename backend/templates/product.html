@@ -257,10 +257,11 @@
 									<div class="col-md-6">
 										<div id="reviews">
 											<ul class="reviews">
+												{% for review in reviews %}
 												<li>
 													<div class="review-heading">
-														<h5 class="name">John</h5>
-														<p class="date">27 DEC 2018, 8:0 PM</p>
+														<h5 class="name">{{ review.name }}</h5>
+														<p class="date">{{ review.created }}</p>
 														<div class="review-rating">
 															<i class="fa fa-star"></i>
 															<i class="fa fa-star"></i>
@@ -270,48 +271,13 @@
 														</div>
 													</div>
 													<div class="review-body">
-														<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
+														<p>{{ review.text }}</p>
 													</div>
-												</li>
-												<li>
-													<div class="review-heading">
-														<h5 class="name">John</h5>
-														<p class="date">27 DEC 2018, 8:0 PM</p>
-														<div class="review-rating">
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star-o empty"></i>
-														</div>
-													</div>
-													<div class="review-body">
-														<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
-													</div>
-												</li>
-												<li>
-													<div class="review-heading">
-														<h5 class="name">John</h5>
-														<p class="date">27 DEC 2018, 8:0 PM</p>
-														<div class="review-rating">
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star-o empty"></i>
-														</div>
-													</div>
-													<div class="review-body">
-														<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
-													</div>
+												{% endfor %}
 												</li>
 											</ul>
 											<ul class="reviews-pagination">
-												<li class="active">1</li>
-												<li><a href="#">2</a></li>
-												<li><a href="#">3</a></li>
-												<li><a href="#">4</a></li>
-												<li><a href="#"><i class="fa fa-angle-right"></i></a></li>
+												<li><a href="{% url 'review' product.id %}">Все отзывы</a></li>
 											</ul>
 										</div>
 									</div>
@@ -320,18 +286,22 @@
 									<!-- Review Form -->
 									<div class="col-md-3">
 										<div id="review-form">
-											<form class="review-form">
-												<input class="input" type="text" placeholder="Your Name">
-												<input class="input" type="email" placeholder="Your Email">
-												<textarea class="input" placeholder="Your Review"></textarea>
+											<form action="{% url 'add_review' product.id %}" method="post" class="review-form" name="rating">
+												{% csrf_token %}
+												<label for="{{star_form.name.id_for_label}}">Имя:</label>
+												{{star_form.name}}
+												<label for="{{star_form.email.id_for_label}}">Электронная почта:</label>
+												{{star_form.email}}
+												<label for="{{star_form.text.id_for_label}}">Отзыв:</label>
+												{{ star_form.text }}
 												<div class="input-rating">
 													<span>Your Rating: </span>
 													<div class="stars">
-														<input id="star5" name="rating" value="5" type="radio"><label for="star5"></label>
-														<input id="star4" name="rating" value="4" type="radio"><label for="star4"></label>
-														<input id="star3" name="rating" value="3" type="radio"><label for="star3"></label>
-														<input id="star2" name="rating" value="2" type="radio"><label for="star2"></label>
-														<input id="star1" name="rating" value="1" type="radio"><label for="star1"></label>
+														{% for k, v in star_form.fields.star.choices %}
+																<input id="rating{{ v }}" type="radio" name="star"
+																	   value="{{ k }}">
+																<label for="rating{{ v }}"></label>
+														{% endfor %}
 													</div>
 												</div>
 												<button class="primary-btn">Submit</button>
@@ -377,14 +347,17 @@
 
 						<div class="product-body">
 							<p class="product-category">{{product.category}}</p>
-							<h3 class="product-name"><a href="#">{{ product.name }}</a></h3>
+							<p class="product-category">{{product.name}}</p>
+							<h3 class="product-name"><a href="{ url 'product_detail_url' product.id }">{{ product.name }}</a></h3>
 							<h4 class="product-price">{{product.price}}<del class="product-old-price">{{product.price}}</del></h4>
 							<div class="product-rating">
 							</div>
 							<div class="product-btns">
 								<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
 								<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
-								<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+								<a class="product-btns" href="">
+									<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+								</a>
 							</div>
 						</div>
 
@@ -440,3 +413,22 @@
 	<!-- /NEWSLETTER -->
 
 {% endblock %}
+
+
+{% block script %}
+<script>
+	const rating = document.querySelector('form[name=rating]');
+
+	rating.addEventListener("submit", function (e) {
+		// Получаем данные из формы
+		let data = new FormData(this);
+		fetch(`${this.action}`, {
+			method: 'POST',
+			body: data
+		})
+			.then(response => alert("Рейтинг установлен"))
+			.catch(error => alert("Ошибка"))
+	});
+</script>
+{% endblock %}
+
