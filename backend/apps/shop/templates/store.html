@@ -82,31 +82,25 @@
 				</div>
 				<!-- /ASIDE -->
 
+				
+
 				<!-- STORE -->
 				<div id="store" class="col-md-9">
 					<!-- store top filter -->
 					<div class="store-filter clearfix">
-						<div class="store-sort">
-							<label>
-								Сортировка по:
-								<select class="input-select">
-									<option value="0">Популярные</option>
-									<option value="1">Позиции</option>
-								</select>
-							</label>
-
-							<label>
-								Показать:
-								<select class="input-select">
-									<option value="0">20</option>
-									<option value="1">50</option>
-								</select>
-							</label>
+						<!-- store bottom filter -->
+						<div class="store-filter clearfix">
+							<ul class="store-pagination">
+								{% if page_obj.has_previous %}
+									<li><a href="?page={{ page_obj.previous_page_number }}"><</a></li>
+								{% endif %}
+								<li class="active">{{ page_obj.number }}</li>
+								{% if page_obj.has_next %}
+									<li><a href="?page={{ page_obj.next_page_number }}">></a></li>
+								{% endif %}
+							</ul>
 						</div>
-						<ul class="store-grid">
-							<li class="active"><i class="fa fa-th"></i></li>
-							<li><a href="#"><i class="fa fa-th-list"></i></a></li>
-						</ul>
+						<!--/store bottom filter -->
 					</div>
 					<!-- /store top filter -->
 
@@ -117,10 +111,13 @@
 							<div class="col-md-4 col-xs-6">
 								<div class="product">
 									<div class="product-img">
+									<div class="product-label">
+										{% if product.discount %}
+											<span class="new">-{{ product.discount }}%</span>
+										{% endif %}
+									</div>
 										<img class="image" src="{{ product.image.url }}" alt="404">
-<!--										<div class="product-label">-->
-<!--											<span class="sale">{{ product.discount }}</span>-->
-<!--										</div>-->
+										
 									</div>
 									<div class="product-body">
 										<p class="product-category">{{ product.category }}</p>
@@ -144,7 +141,9 @@
 										</div>
 									</div>
 									<div class="add-to-cart">
-										<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+										<a href="{% url 'add_cart_url' product.id %}">
+											<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>Добавить в Корзину</button>
+										</a>
 									</div>
 								</div>
 							</div>
@@ -157,11 +156,11 @@
 					<div class="store-filter clearfix">
 						<ul class="store-pagination">
 							{% if page_obj.has_previous %}
-								<li><a href="?page={{ page_obj.previous_page_number }}"></a></li>
+								<li><a href="?page={{ page_obj.previous_page_number }}"><</a></li>
 							{% endif %}
 							<li class="active">{{ page_obj.number }}</li>
 							{% if page_obj.has_next %}
-								<li><a href="?page={{ page_obj.next_page_number }}"></a></li>
+								<li><a href="?page={{ page_obj.next_page_number }}">></a></li>
 							{% endif %}
 						</ul>
 					</div>
