@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+	Checkout
+{% endblock %}
+
+{% block content %}
+	<!-- BREADCRUMB -->
+	<div id="breadcrumb" class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+				<div class="col-md-12">
+					<h3 class="breadcrumb-header">Checkout</h3>
+					<ul class="breadcrumb-tree">
+						<li><a href="#">Home</a></li>
+						<li class="active">Checkout</li>
+					</ul>
+				</div>
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /BREADCRUMB -->
+
+	<!-- SECTION -->
+	<div class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+
+				<div class="col-md-7">
+					<!-- Billing Details -->
+					<div class="billing-details">
+						<div class="section-title">
+							<h3 class="title">Billing address</h3>
+						</div>
+						<form method="post">
+							{% csrf_token%}
+							{{ form.as_p }}
+							<div class='text-center'>
+								<button style="margin-top: 3rem" type="submit" class="btn btn-primary">Создать заказ</button>
+							</div>
+						</form>
+						
+					</div>
+					<!-- /Billing Details -->
+
+					
+					
+				</div>
+
+				<!-- Order Details -->
+				<div class="col-md-5 order-details">
+					<div class="section-title text-center">
+						<h3 class="title">Ваш Заказ</h3>
+					</div>
+					<div class="order-summary">
+						<div class="order-col">
+							<div><strong>Товар</strong></div>
+							<div><strong>Цена</strong></div>
+						</div>
+						<div class="order-products">
+							{% for item in cart %}
+							<div class="order-col">
+								<div>{{ item.quantity }}x {{ item.product.title }}</div>
+								<div>{% widthratio item.quantity 1 item.price %} сом</div>
+								
+							</div>
+							{% endfor %}
+						</div>
+						<div class="order-col">
+							<div>Shiping</div>
+							<div><strong>FREE</strong></div>
+						</div>
+						<div class="order-col">
+							<div><strong>Всего: </strong></div>
+							<div><strong class="order-total">{{ cart.get_total_price }} сом</strong></div>
+						</div>
+					</div>
+					<a href="#" class="primary-btn order-submit">Place order</a>
+				</div>
+				<!-- /Order Details -->
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /SECTION -->
+
+	<!-- NEWSLETTER -->
+	<div id="newsletter" class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+				<div class="col-md-12">
+					<div class="newsletter">
+						<p>Sign Up for the <strong>NEWSLETTER</strong></p>
+						<form>
+							<input class="input" type="email" placeholder="Enter Your Email">
+							<button class="newsletter-btn"><i class="fa fa-envelope"></i> Subscribe</button>
+						</form>
+						<ul class="newsletter-follow">
+							<li>
+								<a href="#"><i class="fa fa-facebook"></i></a>
+							</li>
+							<li>
+								<a href="#"><i class="fa fa-twitter"></i></a>
+							</li>
+							<li>
+								<a href="#"><i class="fa fa-instagram"></i></a>
+							</li>
+							<li>
+								<a href="#"><i class="fa fa-pinterest"></i></a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /NEWSLETTER -->
+{% endblock %}

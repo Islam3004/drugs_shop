@@ -1,18 +1,19 @@
+
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView
-from django.views.generic.base import View
+from django.views.generic import ListView, DetailView, View
 from .models import Products, Reviews, Categories, RatingStar
 from .forms import ReviewsForm
-# Create your views here.
-from .models import Products
+from backend.apps.cart.forms import CartAddProductForm
+from backend.apps.cart.cart import Cart
+from django.views.generic.edit import FormMixin
 from django.shortcuts import get_object_or_404
-from django.http import JsonResponse, HttpResponse
+# Create your views here.
+
 
 
 class HomeView(ListView):
     template_name = 'index.html'
     queryset = Products.objects.filter(status=True)
-
 
 
 class ProductListView(ListView):
@@ -30,10 +31,14 @@ class ProductListView(ListView):
         queryset = self.model.objects.filter(status=True)
         return queryset
 
-class ProductDetailView(DetailView):
+
+
+    
+class ProductDetailView(FormMixin, DetailView):
     template_name = 'product.html'
     model = Products
     context_object_name = 'product'
+    form_class = CartAddProductForm
 
 
     def get_context_data(self, **kwargs):
@@ -47,7 +52,6 @@ class ProductDetailView(DetailView):
 
 
 class AddReview(View):
-
     def post(self, request, pk):
         form = ReviewsForm(request.POST)
         product = Products.objects.get(id=pk)
@@ -63,11 +67,11 @@ class AddReview(View):
         return redirect(f"/product/{product.id}/")
 
 
-
 class ReviewsView(DetailView):
     template_name = 'reviews.html'
     model = Products
     context_object_name = 'product'
+
 
     def get_context_data(self, **kwargs):
         context = super(ReviewsView, self).get_context_data(**kwargs)
@@ -78,8 +82,7 @@ class ReviewsView(DetailView):
 
 
 
-
-
     
+
 
 

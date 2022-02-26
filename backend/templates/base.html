@@ -84,13 +84,14 @@
 						<!-- SEARCH BAR -->
 						<div class="col-md-6">
 							<div class="header-search">
-								<form style="display: flex">
-									<select class="input-select" value="id">										<option disabled>Категории</option>
+								<form style="display: flex" method='get', action='.'>
+									<select class="input-select" value="id">										
+									<option disabled>Категории</option>
 										{% for category in categories%}
 										<option value="{{category.title}}">{{ category.title}}</option>
 										{% endfor %}
 									</select>
-									<input class="input" placeholder="Search here">
+									<input type='submit' value='Search' class="input" placeholder="Search here">
 									<button class="search-btn">Search</button>
 								</form>
 							</div>
@@ -115,40 +116,40 @@
 									<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
 										<i class="fa fa-shopping-cart"></i>
 										<span>Your Cart</span>
-										<div class="qty">3</div>
+										{% if number_of_cart %}
+											<div class="qty">{{ number_of_cart }}</div>
+										{% endif %}
 									</a>
 									<div class="cart-dropdown">
 										<div class="cart-list">
-											<div class="product-widget">
-												<div class="product-img">
-													<img src="./img/product01.png" alt="">
+											{% for item in cart %}
+												<div class="product-widget">
+													<div class="product-img">
+														<img src="{{ item.product.image.url }}" alt="">
+													</div>
+													<div class="product-body">
+														<h3 class="product-name"><a href="{% url 'product_detail_url' item.product.id %}">{{ item.product.title }}</a></h3>
+														<h4 class="product-price"><span class="qty">{{ item.quantity }}шт.</span>{{ item.price }}</h4>
+													</div>
+													<a href="{% url 'remove_cart_url' item.product.id %}">
+														<button class="delete"><i class="fa fa-close"></i></button>
+													</a>
 												</div>
-												<div class="product-body">
-													<h3 class="product-name"><a href="#">product name goes here</a></h3>
-													<h4 class="product-price"><span class="qty">1x</span>$980.00</h4>
-												</div>
-												<button class="delete"><i class="fa fa-close"></i></button>
-											</div>
-
-											<div class="product-widget">
-												<div class="product-img">
-													<img src="./img/product02.png" alt="">
-												</div>
-												<div class="product-body">
-													<h3 class="product-name"><a href="#">product name goes here</a></h3>
-													<h4 class="product-price"><span class="qty">3x</span>$980.00</h4>
-												</div>
-												<button class="delete"><i class="fa fa-close"></i></button>
-											</div>
+											{% endfor %}
 										</div>
 										<div class="cart-summary">
-											<small>3 Item(s) selected</small>
-											<h5>SUBTOTAL: $2940.00</h5>
+											{% if cart.get_total_price %}
+												<h5>Общая сумма: {{ cart.get_total_price }}</h5>
+												<div class="cart-btns">
+										
+													<a href="{% url 'clear_cart_url' %}">Очистить</a>
+													<a href="{% url 'checkout_url' %}">Купить  <i class="fa fa-arrow-circle-right"></i></a>
+												</div>
+											{% else	%}
+												<h5>Корзина пустая!</h5>
+											{% endif %}
 										</div>
-										<div class="cart-btns">
-											<a href="#">View Cart</a>
-											<a href="#">Checkout  <i class="fa fa-arrow-circle-right"></i></a>
-										</div>
+										
 									</div>
 								</div>
 								<!-- /Cart -->
@@ -181,7 +182,7 @@
 				<div id="responsive-nav">
 					<!-- NAV -->
 					<ul class="main-nav nav navbar-nav">
-						<li class="active"><a href="{% url 'index_url' %}">Главная</a></li>
+						<li><a href="{% url 'index_url' %}">Главная</a></li>
 						<li><a href="{% url 'products_list_url' %}">Все Товары</a></li>
 						<li><a href="{% url 'products_list_url' %}">Горячие товары</a></li>
 					</ul>
