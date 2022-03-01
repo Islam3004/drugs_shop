@@ -20,7 +20,7 @@ class ProductListView(ListView):
     template_name = 'store.html'
     model = Products
     context_object_name = 'products'
-    paginate_by = 10
+    paginate_by = 9
 
     def get_queryset(self, **kwargs):
         category_slug = self.kwargs.get("category_slug")
@@ -52,18 +52,23 @@ class ProductDetailView(FormMixin, DetailView):
 
 
 class AddReview(View):
+
     def post(self, request, pk):
         form = ReviewsForm(request.POST)
         product = Products.objects.get(id=pk)
         rating = RatingStar.objects.get(value=int(request.POST.get('star')))
+
         if form.is_valid():
-            Reviews.objects.create(
-                email=request.POST.get('email'),
-                name=request.POST.get('name'),
-                product=product,
-                text=request.POST.get('text'),
-                star=rating
-            )
+            if request.user.is_authenticated:
+                Reviews.objects.create(
+                    email=request.POST.get('email'),
+                    name=request.POST.get('name'),
+                    product=product,
+                    text=request.POST.get('text'),
+                    star=rating,
+                )
+            return redirect("/registration/login")
+
         return redirect(f"/product/{product.id}/")
 
 

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django import forms
 from django.utils.safestring import mark_safe
-from .models import Products, Categories, RatingStar, Reviews, Rating
+from .models import Products, Categories, RatingStar, Reviews
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 # Register your models here.
 

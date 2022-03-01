@@ -263,6 +263,7 @@
 														<h5 class="name">{{ review.name }}</h5>
 														<p class="date">{{ review.created }}</p>
 														<div class="review-rating">
+
 															<i class="fa fa-star"></i>
 															<i class="fa fa-star"></i>
 															<i class="fa fa-star"></i>
@@ -277,7 +278,7 @@
 												</li>
 											</ul>
 											<ul class="reviews-pagination">
-												<li><a href="{% url 'review' product.id %}">Все отзывы</a></li>
+												<a href="{% url 'review' product.id %}"><button class="primary-btn">Все отзывы</button></a>
 											</ul>
 										</div>
 									</div>
@@ -355,7 +356,7 @@
 							<div class="product-btns">
 								<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
 								<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
-								<a class="product-btns" href="">
+								<a class="product-btns" href="{ url 'product_detail_url' product.id }">
 									<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
 								</a>
 							</div>
