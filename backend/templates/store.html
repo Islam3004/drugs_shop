@@ -45,15 +45,19 @@
 						<div class="price-filter">
 							<div id="price-slider"></div>
 							<div class="input-number price-min">
-								<input id="price-min" type="number">
-								<span class="qty-up">+</span>
-								<span class="qty-down">-</span>
+								<form method="get" action="{% url 'products_list_url' %}" name="filter">
+									<input name="min" id="price-min" type="number" required="">
+									<button class="qty-up">+</button>
+									<button class="qty-down">-</button>
+								</form>
 							</div>
 							<span>-</span>
 							<div class="input-number price-max">
-								<input id="price-max" type="number">
-								<span class="qty-up">+</span>
-								<span class="qty-down">-</span>
+								<form method="get" action="{% url 'products_list_url' %}" name="filter">
+									<input name="max" id="price-max" type="number" required="">
+									<span class="qty-up">+</span>
+									<span class="qty-down">-</span>
+								</form>
 							</div>
 						</div>
 					</div>
@@ -108,6 +112,7 @@
 					<div class="row">
 						<!-- product -->
 						{% for product in products %}
+						<a href="{% url 'product_detail_url' product.id %}">
 							<div class="col-md-4 col-xs-6">
 								<div class="product">
 									<div class="product-img">
@@ -147,6 +152,7 @@
 									</div>
 								</div>
 							</div>
+							</a>
 						{% endfor %}
 						<!-- /product -->
 					</div>

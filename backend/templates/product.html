@@ -5,29 +5,7 @@
 	Product
 {% endblock %}
 	
-{% block content %}	
-	<!-- BREADCRUMB -->
-	<div id="breadcrumb" class="section">
-		<!-- container -->
-		<div class="container">
-			<!-- row -->
-			<div class="row">
-				<div class="col-md-12">
-					<ul class="breadcrumb-tree">
-						<li><a href="#">Home</a></li>
-						<li><a href="#">All Categories</a></li>
-						<li><a href="#">Accessories</a></li>
-						<li><a href="#">Headphones</a></li>
-						<li class="active">Product name goes here</li>
-					</ul>
-				</div>
-			</div>
-			<!-- /row -->
-		</div>
-		<!-- /container -->
-	</div>
-	<!-- /BREADCRUMB -->
-
+{% block content %}
 	<!-- SECTION -->
 	<div class="section">
 		<!-- container -->
@@ -58,7 +36,7 @@
 
 				<!-- Product thumb imgs -->
 				<div class="col-md-2  col-md-pull-5">
-					<div id="product-imgs">
+					<div style="display: none" id="product-imgs">
 						<div class="product-preview">
 							<img src="./img/product01.png" alt="">
 						</div>
@@ -90,7 +68,7 @@
 								<i class="fa fa-star"></i>
 								<i class="fa fa-star-o"></i>
 							</div>
-							<a class="review-link" href="#">10 Review(s) | Add your review</a>
+							<a class="review-link" href="#">{{ stars }} Review(s) | Add your review</a>
 						</div>
 						<div>
 							<h3 class="product-price">{{ product.price }}</h3>
@@ -262,15 +240,52 @@
 													<div class="review-heading">
 														<h5 class="name">{{ review.name }}</h5>
 														<p class="date">{{ review.created }}</p>
-														<div class="review-rating">
-
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star-o empty"></i>
+														{% if review.star.value == 5%}
+															<div class="review-rating">
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+															</div>
+														{% endif %}
+														{% if review.star.value == 4%}
+															<div class="review-rating">
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star-o empty"></i>
+															</div>
+														{% endif %}
+														{% if review.star.value == 3%}
+															<div class="review-rating">
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star-o empty"></i>
+																<i class="fa fa-star-o empty"></i>
+															</div>
+														{% endif %}
+														{% if review.star.value == 2%}
+															<div class="review-rating">
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star-o empty"></i>
+																<i class="fa fa-star-o empty"></i>
+																<i class="fa fa-star-o empty"></i>
+															</div>
+														{% endif %}
+														{% if review.star.value == 1%}
+															<div class="review-rating">
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star-o empty"></i>
+																<i class="fa fa-star-o empty"></i>
+																<i class="fa fa-star-o empty"></i>
+																<i class="fa fa-star-o empty"></i>
+															</div>
+														{% endif %}
 														</div>
-													</div>
 													<div class="review-body">
 														<p>{{ review.text }}</p>
 													</div>
@@ -340,6 +355,7 @@
 
 				<!-- product -->
 				{% for product in related_product %}
+				<a href="{% url 'product_detail_url' product.id %}">
 				<div class="col-md-3 col-xs-6">
 					<div class="product">
 						<div class="product-img">
@@ -349,14 +365,14 @@
 						<div class="product-body">
 							<p class="product-category">{{product.category}}</p>
 							<p class="product-category">{{product.name}}</p>
-							<h3 class="product-name"><a href="{ url 'product_detail_url' product.id }">{{ product.name }}</a></h3>
+							<h3 class="product-name"><a href="{% url 'product_detail_url' product.id %}">{{ product.name }}</a></h3>
 							<h4 class="product-price">{{product.price}}<del class="product-old-price">{{product.price}}</del></h4>
 							<div class="product-rating">
 							</div>
 							<div class="product-btns">
 								<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
 								<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
-								<a class="product-btns" href="{ url 'product_detail_url' product.id }">
+								<a class="product-btns" href="{% url 'product_detail_url' product.id %}">
 									<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
 								</a>
 							</div>
@@ -367,7 +383,9 @@
 						</div>
 					</div>
 				</div>
+					</a>
 				{% endfor %}
+
 				<!-- /product -->
 
 			</div>
@@ -416,20 +434,5 @@
 {% endblock %}
 
 
-{% block script %}
-<script>
-	const rating = document.querySelector('form[name=rating]');
 
-	rating.addEventListener("submit", function (e) {
-		// Получаем данные из формы
-		let data = new FormData(this);
-		fetch(`${this.action}`, {
-			method: 'POST',
-			body: data
-		})
-			.then(response => alert("Рейтинг установлен"))
-			.catch(error => alert("Ошибка"))
-	});
-</script>
-{% endblock %}
 

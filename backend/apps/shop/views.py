@@ -1,6 +1,6 @@
 
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView, View
+from django.views.generic import ListView, DetailView, View, CreateView
 from .models import Products, Reviews, Categories, RatingStar
 from .forms import ReviewsForm
 from backend.apps.cart.forms import CartAddProductForm
@@ -23,15 +23,27 @@ class ProductListView(ListView):
     paginate_by = 9
 
     def get_queryset(self, **kwargs):
+        search_query = self.request.GET.get("q", '')
+        if search_query:
+            queryset = self.model.objects.filter(title__icontains=self.request.GET.get("q", ''))
+            return queryset
         category_slug = self.kwargs.get("category_slug")
-        if category_slug is not None:
+        if category_slug:
             category = get_object_or_404(Categories, slug=category_slug)
             queryset = self.model.objects.filter(status=True, category=category)
+            return queryset
+        price_min_query = self.request.GET.get("min", "")
+        if price_min_query:
+            queryset = self.model.objects.filter(quantity__icontains=self.request.GET.get("min",''))
             return queryset
         queryset = self.model.objects.filter(status=True)
         return queryset
 
-
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProductListView, self).get_context_data(*args, **kwargs)
+        context["q"] = self.request.GET.get("q")
+        context["min"] = self.request.GET.get("q")
+        return context
 
     
 class ProductDetailView(FormMixin, DetailView):
@@ -45,21 +57,23 @@ class ProductDetailView(FormMixin, DetailView):
         context = super(ProductDetailView, self).get_context_data(**kwargs)
         related_product = Products.objects.filter(status=True, category=self.object.category)
         reviews = Reviews.objects.select_related('product').filter(product=self.object.id)
+        reviews_stars = Reviews.objects.filter()
         context['related_product'] = related_product[:4] if len(related_product) > 4 else related_product
         context["star_form"] = ReviewsForm
         context["reviews"] = reviews[:3] if len(reviews) > 3 else reviews
         return context
 
 
-class AddReview(View):
+class AddReview(CreateView):
 
     def post(self, request, pk):
         form = ReviewsForm(request.POST)
         product = Products.objects.get(id=pk)
+        print(product)
         rating = RatingStar.objects.get(value=int(request.POST.get('star')))
-
-        if form.is_valid():
-            if request.user.is_authenticated:
+        print(rating)
+        if request.user.is_authenticated:
+            if form.is_valid():
                 Reviews.objects.create(
                     email=request.POST.get('email'),
                     name=request.POST.get('name'),
@@ -67,9 +81,10 @@ class AddReview(View):
                     text=request.POST.get('text'),
                     star=rating,
                 )
-            return redirect("/registration/login")
+            return redirect(f"/product/{product.id}/")
+        return redirect("/registration/login")
 
-        return redirect(f"/product/{product.id}/")
+
 
 
 class ReviewsView(DetailView):
@@ -87,7 +102,10 @@ class ReviewsView(DetailView):
 
 
 
-    
+
+
+
+
 
 
 

@@ -84,15 +84,15 @@
 						<!-- SEARCH BAR -->
 						<div class="col-md-6">
 							<div class="header-search">
-								<form style="display: flex" method='get', action='.'>
-									<select class="input-select" value="id">										
-									<option disabled>Категории</option>
+								<form style="display: flex" method='get' action="{% url 'products_list_url' %}" name="filter">
+									<select onchange="window.location.href = this.options[this.selectedIndex].value" class="input-select" value="id" style="outline:none; width:150px;">
+									<option disabled selected>Категории</option>
 										{% for category in categories%}
-										<option value="{{category.title}}">{{ category.title}}</option>
+											<option value="{%  url 'category_list' category.slug %}"><value href="{% url 'category_list' category.slug %}"> {{ category.title}} </value> </option>
 										{% endfor %}
 									</select>
-									<input type='submit' value='Search' class="input" placeholder="Search here">
-									<button class="search-btn">Search</button>
+									<input type='search' name="q" class="input" placeholder="Search here" required="">
+									<button type="submit" class="search-btn">Поиск</button>
 								</form>
 							</div>
 						</div>
