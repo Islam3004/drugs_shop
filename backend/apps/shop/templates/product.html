@@ -24,7 +24,6 @@
 		</div>
 		<!-- /container -->
 	</div>
-	<!-- /BREADCRUMB -->
 
 	<!-- SECTION -->
 	<div class="section">
@@ -44,6 +43,23 @@
 
 				<!-- Product thumb imgs -->
 				<div class="col-md-2  col-md-pull-5">
+					<div style="display: none" id="product-imgs">
+						<div class="product-preview">
+							<img src="./img/product01.png" alt="">
+						</div>
+
+						<div class="product-preview">
+							<img src="./img/product03.png" alt="">
+						</div>
+
+						<div class="product-preview">
+							<img src="./img/product06.png" alt="">
+						</div>
+
+						<div class="product-preview">
+							<img src="./img/product08.png" alt="">
+						</div>
+					</div>
 				</div>
 				<!-- /Product thumb imgs -->
 
@@ -59,7 +75,7 @@
 								<i class="fa fa-star"></i>
 								<i class="fa fa-star-o"></i>
 							</div>
-							<a class="review-link" href="#">10 Review(s) | Add your review</a>
+							<a class="review-link" href="#">{{ stars }} Review(s) | Add your review</a>
 						</div>
 						<div>
 							<h3 class="product-price">{{ price_with_discount }}</h3>
@@ -227,14 +243,52 @@
 													<div class="review-heading">
 														<h5 class="name">{{ review.name }}</h5>
 														<p class="date">{{ review.created }}</p>
-														<div class="review-rating">
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star-o empty"></i>
+														{% if review.star.value == 5%}
+															<div class="review-rating">
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+															</div>
+														{% endif %}
+														{% if review.star.value == 4%}
+															<div class="review-rating">
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star-o empty"></i>
+															</div>
+														{% endif %}
+														{% if review.star.value == 3%}
+															<div class="review-rating">
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star-o empty"></i>
+																<i class="fa fa-star-o empty"></i>
+															</div>
+														{% endif %}
+														{% if review.star.value == 2%}
+															<div class="review-rating">
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star-o empty"></i>
+																<i class="fa fa-star-o empty"></i>
+																<i class="fa fa-star-o empty"></i>
+															</div>
+														{% endif %}
+														{% if review.star.value == 1%}
+															<div class="review-rating">
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star-o empty"></i>
+																<i class="fa fa-star-o empty"></i>
+																<i class="fa fa-star-o empty"></i>
+																<i class="fa fa-star-o empty"></i>
+															</div>
+														{% endif %}
 														</div>
-													</div>
 													<div class="review-body">
 														<p>{{ review.text }}</p>
 													</div>
@@ -344,6 +398,7 @@
 						</a>
 					</div>
 				{% endfor %}
+
 				<!-- /product -->
 
 			</div>
@@ -357,20 +412,5 @@
 {% endblock %}
 
 
-{% block script %}
-<script>
-	const rating = document.querySelector('form[name=rating]');
 
-	rating.addEventListener("submit", function (e) {
-		// Получаем данные из формы
-		let data = new FormData(this);
-		fetch(`${this.action}`, {
-			method: 'POST',
-			body: data
-		})
-			.then(response => alert("Рейтинг установлен"))
-			.catch(error => alert("Ошибка"))
-	});
-</script>
-{% endblock %}
 
