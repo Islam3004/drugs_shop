@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="">
+<div class="parent">
 	<div id="reviews">
 		<ul class="reviews">
 			{% for review in reviews %}
@@ -14,18 +14,57 @@
 				<div class="review-heading">
 					<h5 class="name">{{ review.name }}</h5>
 					<p class="date">{{ review.created }}</p>
-					<div class="review-rating">
-						<i class="fa fa-star"></i>
-						<i class="fa fa-star"></i>
-						<i class="fa fa-star"></i>
-						<i class="fa fa-star"></i>
-						<i class="fa fa-star-o empty"></i>
-					</div>
+						{% if review.star.value == 5%}
+							<div class="review-rating">
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star"></i>
+							</div>
+						{% endif %}
+						{% if review.star.value == 4%}
+							<div class="review-rating">
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star-o empty"></i>
+							</div>
+						{% endif %}
+						{% if review.star.value == 3%}
+							<div class="review-rating">
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star-o empty"></i>
+								<i class="fa fa-star-o empty"></i>
+							</div>
+						{% endif %}
+						{% if review.star.value == 2%}
+							<div class="review-rating">
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star-o empty"></i>
+								<i class="fa fa-star-o empty"></i>
+								<i class="fa fa-star-o empty"></i>
+							</div>
+						{% endif %}
+						{% if review.star.value == 1%}
+							<div class="review-rating">
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star-o empty"></i>
+								<i class="fa fa-star-o empty"></i>
+								<i class="fa fa-star-o empty"></i>
+								<i class="fa fa-star-o empty"></i>
+							</div>
+						{% endif %}
 				</div>
 				<div class="review-body">
 					<p>{{ review.text }}</p>
 				</div>
 			</li>
+			<hr>
 			{% endfor %}
 			</ul>
 		</div>

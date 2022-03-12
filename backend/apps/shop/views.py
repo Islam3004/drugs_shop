@@ -7,6 +7,7 @@ from backend.apps.cart.forms import CartAddProductForm
 from backend.apps.cart.cart import Cart
 from django.views.generic.edit import FormMixin
 from django.shortcuts import get_object_or_404
+
 # Create your views here.
 
 
@@ -39,12 +40,6 @@ class ProductListView(ListView):
         queryset = self.model.objects.filter(status=True)
         return queryset
 
-    def get_context_data(self, *args, **kwargs):
-        context = super(ProductListView, self).get_context_data(*args, **kwargs)
-        context["q"] = self.request.GET.get("q")
-        context["min"] = self.request.GET.get("q")
-        return context
-
     
 class ProductDetailView(FormMixin, DetailView):
     template_name = 'product.html'
@@ -69,9 +64,7 @@ class AddReview(CreateView):
     def post(self, request, pk):
         form = ReviewsForm(request.POST)
         product = Products.objects.get(id=pk)
-        print(product)
         rating = RatingStar.objects.get(value=int(request.POST.get('star')))
-        print(rating)
         if request.user.is_authenticated:
             if form.is_valid():
                 Reviews.objects.create(
@@ -99,12 +92,7 @@ class ReviewsView(DetailView):
         context["reviews"] = reviews
         return context
 
-
-
-
-
-
-
+#
 
 
 
