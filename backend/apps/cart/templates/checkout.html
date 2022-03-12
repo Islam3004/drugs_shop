@@ -14,10 +14,10 @@
 			<!-- row -->
 			<div class="row">
 				<div class="col-md-12">
-					<h3 class="breadcrumb-header">Checkout</h3>
+					<h3 class="breadcrumb-header">Касса</h3>
 					<ul class="breadcrumb-tree">
-						<li><a href="#">Home</a></li>
-						<li class="active">Checkout</li>
+						<li><a href="{% url 'index_url' %}">Главная страница</a></li>
+						<li class="active">Касса</li>
 					</ul>
 				</div>
 			</div>
@@ -37,14 +37,11 @@
 				<div class="col-md-7">
 					<!-- Billing Details -->
 					<div class="billing-details">
-						<div class="section-title">
-							<h3 class="title">Billing address</h3>
-						</div>
 						<form method="post">
 							{% csrf_token%}
 							{{ form.as_p }}
 							<div class='text-center'>
-								<button style="margin-top: 3rem" type="submit" class="btn btn-primary">Создать заказ</button>
+								<button style="margin-top: 3rem" type="submit" class="primary-btn order-submit">Купить</button>
 							</div>
 						</form>
 						
@@ -83,7 +80,6 @@
 							<div><strong class="order-total">{{ cart.get_total_price }} сом</strong></div>
 						</div>
 					</div>
-					<a href="#" class="primary-btn order-submit">Place order</a>
 				</div>
 				<!-- /Order Details -->
 			</div>

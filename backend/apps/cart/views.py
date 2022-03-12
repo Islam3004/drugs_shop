@@ -14,31 +14,30 @@ def CartPageView(request):
 
 
 def cart_add(request, product_id):
-    cart = Cart(request)
-    product = Products.objects.get(id=product_id)
-    cart.add(product=product, quantity=1, update_quantity=False)
-    return redirect('products_list_url')
-
-
-def cart_add_from_form(request, product_id):
-    cart = Cart(request)
-    product = Products.objects.get(id=product_id)
-    form = CartAddProductForm(request.POST)
-    if form.is_valid():
-        cart.add(product=product, quantity=form.cleaned_data.get('quantity'), update_quantity=form.cleaned_data.get('update'))
+    if request.user.is_authenticated:
+        cart = Cart(request)
+        product = Products.objects.get(id=product_id)
+        cart.add(product=product, quantity=1, update_quantity=False)
         return redirect('products_list_url')
-    return redirect('products_list_url')
+    else:
+        return redirect('login')
 
 def cart_remove(request, product_id):
-    cart = Cart(request)
-    product = Products.objects.get(id=product_id)
-    cart.remove(product=product)
-    return redirect('products_list_url')
+    if request.user.is_authenticated:
+        cart = Cart(request)
+        product = Products.objects.get(id=product_id)
+        cart.remove(product=product)
+        return redirect('products_list_url')
+    else:
+        return redirect('login')
 
 def cart_clear(request):
-    cart = Cart(request)
-    cart.clear()
-    return redirect('products_list_url')
+    if request.user.is_authenticated:
+        cart = Cart(request)
+        cart.clear()
+        return redirect('products_list_url')
+    else:
+        return redirect('login')
 
 class CheckoutView(FormView):
     template_name = 'checkout.html'
@@ -57,6 +56,9 @@ class CheckoutView(FormView):
                 price=item['price'],
                 product=item['product']
             )
+            product = Products.objects.get(id=item['product'].id)
+            product.quantity - item['quantity']
+            product.save()
         cart.clear()
         return super().form_valid(form)
     

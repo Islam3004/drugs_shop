@@ -50,15 +50,15 @@
 					<ul class="header-links pull-left">
 						<li><a href="#"><i class="fa fa-phone"></i> +021-95-51-84</a></li>
 						<li><a href="#"><i class="fa fa-envelope-o"></i> email@email.com</a></li>
-						<li><a href="#"><i class="fa fa-map-marker"></i> 1734 Stonecoal Road</a></li>
+						<li><a href="https://www.google.com/maps/contrib/116392698331744132518/photos/@42.8789919,74.5956283,17z/data=!3m1!4b1!4m3!8m2!3m1!1e1"><i class="fa fa-map-marker"></i>Рыскулова 79Б Бишкек</a></li>
 					</ul>
 				</ul>
 				<ul class="header-links pull-right">
 					{% if request.user.is_authenticated %}
 						<li><a href="#"><i class="fa fa-user-o"></i>{{user.username}}</a></li>
-						<li><a href="{% url 'logout' %}">Logout</a></li>
+						<li><a href="{% url 'logout' %}">Выйти</a></li>
 					{% else %}
-						<li><a href="{% url 'login' %}"><i class="fa fa-user-o"></i>Login</a></li>
+						<li><a href="{% url 'login' %}"><i class="fa fa-user-o"></i>Войти</a></li>
 					{% endif %}
 			  </ul>
 				</div>
@@ -101,15 +101,7 @@
 						<!-- ACCOUNT -->
 						<div class="col-md-3 clearfix">
 							<div class="header-ctn">
-								<!-- Wishlist -->
-								<div>
-									<a href="#">
-										<i class="fa fa-heart-o"></i>
-										<span>Your Wishlist</span>
-										<div class="qty">2</div>
-									</a>
-								</div>
-								<!-- /Wishlist -->
+				
 
 								<!-- Cart -->
 								<div class="dropdown">
@@ -128,7 +120,7 @@
 														<img src="{{ item.product.image.url }}" alt="">
 													</div>
 													<div class="product-body">
-														<h3 class="product-name"><a href="{% url 'product_detail_url' item.product.id %}">{{ item.product.title }}</a></h3>
+														<h3 class="product-name"><a href="{% url 'product_detail_url' item.product.slug %}">{{ item.product.title }}</a></h3>
 														<h4 class="product-price"><span class="qty">{{ item.quantity }}шт.</span>{{ item.price }}</h4>
 													</div>
 													<a href="{% url 'remove_cart_url' item.product.id %}">
@@ -184,7 +176,6 @@
 					<ul class="main-nav nav navbar-nav">
 						<li><a href="{% url 'index_url' %}">Главная</a></li>
 						<li><a href="{% url 'products_list_url' %}">Все Товары</a></li>
-						<li><a href="{% url 'products_list_url' %}">Горячие товары</a></li>
 					</ul>
 					<!-- /NAV -->
 				</div>
@@ -223,18 +214,6 @@
 							</div>
 						</div>
 
-						<div class="col-md-3 col-xs-6">
-							<div class="footer">
-								<h3 class="footer-title">Categories</h3>
-								<ul class="footer-links">
-									<li><a href="#">Hot deals</a></li>
-									<li><a href="#">Laptops</a></li>
-									<li><a href="#">Smartphones</a></li>
-									<li><a href="#">Cameras</a></li>
-									<li><a href="#">Accessories</a></li>
-								</ul>
-							</div>
-						</div>
 
 						<div class="clearfix visible-xs"></div>
 
