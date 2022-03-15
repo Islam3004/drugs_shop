@@ -9,7 +9,7 @@ from .models import Order, OrderItem
 
 def CartPageView(request):
     cart = Cart(request)
-    context = {'cart': cart, 'number_of_cart': len(cart)}
+    context = {'cart': cart, 'number_of_cart': len(cart),}
     return context
 
 

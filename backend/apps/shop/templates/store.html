@@ -59,6 +59,7 @@
 					</div>
 					<!-- /aside Widget -->
 
+<<<<<<< HEAD
 					<!-- aside Widget -->
 
 
@@ -67,6 +68,8 @@
 					<!-- aside Widget -->
 
 					<!-- /aside Widget -->
+=======
+>>>>>>> 2d34fe9588f8833e20d029b316879690843cb481
 
 				</div>
 				<!-- /ASIDE -->
@@ -97,11 +100,10 @@
 					<div class="row">
 						<!-- product -->
 						{% for product in products %}
-						<a href="{% url 'product_detail_url' product.id %}">
 							<div class="col-md-4 col-xs-6">
-								<a href="{% url 'product_detail_url' product.slug %}">
-									<div class="product">
-										<div class="product-img">
+								<div class="product">
+									<div class="product-img">
+									<a href="{% url 'product_detail_url' product.slug %}">
 										<div class="product-label">
 											{% if product.discount %}
 												<span class="new">-{{ product.discount }}%</span>
@@ -110,31 +112,42 @@
 											<img class="image" src="{{ product.image.url }}" alt="404">
 											
 										</div>
-										<div class="product-body">
-											<p class="product-category">{{ product.category }}</p>
-											<h3 class="product-name">{{ product.title }}</h3>
-											{% if product.discount %}
-												<h4 class="product-price">{{ product.price }} сом<del class="product-old-price">{{ product.price }} сом</del></h4>
-											{% else %}
-												<h4 class="product-price">{{ product.price }} сом</h4>
-											{% endif %}
-											<div class="product-rating">
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star"></i>
-											</div>
+									</a>
+									<div class="product-body">
+										<a href="{% url 'category_list' product.category.slug %}"><p class="product-category">{{ product.category }}</p></a>
+										<a href="{% url 'product_detail_url' product.slug %}"><h3 class="product-name">{{ product.title }}</h3></a>
+										{% if product.discount %}
+											<h4 class="product-price">{{ product.price }} сом<del class="product-old-price">{{ product.price }} сом</del></h4>
+										{% else %}
+											<h4 class="product-price">{{ product.price }} сом</h4>
+										{% endif %}
+										<div class="product-rating">
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
 										</div>
-										<div class="add-to-cart">
-											<a href="{% url 'add_cart_url' product.id %}">
-												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>Добавить в Корзину</button>
-											</a>
+										<div class="product-btns">
+											{% if request.user in product.favorites.all %}
+												<a href="{% url 'add_favorites' product.id %}">
+													<button class="add-to-wishlist"><i class="fa fa-heart"></i><span class="tooltipp"></span></button>
+												</a>
+											{% else %}
+												<a href="{% url 'add_favorites' product.id %}">
+													<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp"></span></button>
+												</a>
+											{% endif %}
+											<a href="{% url 'product_detail_url' product.slug %}"><button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp"></span></button></a>
 										</div>
 									</div>
-								</a>
-							</div>
-							</a>
+									<div class="add-to-cart">
+										<a href="{% url 'add_cart_url' product.id %}">
+											<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>Добавить в Корзину</button>
+										</a>
+									</div>
+								</div>
+						</div>
 						{% endfor %}
 						<!-- /product -->
 					</div>

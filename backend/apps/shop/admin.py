@@ -56,7 +56,7 @@ class ProductsAdmin(admin.ModelAdmin):
         }),
 
         ("Количество товара, скидка и цена", {
-            "fields": (('price', 'discount', 'quantity'),'status')
+            "fields": (('price', 'discount', 'quantity'),'status', 'favorites')
         }),  
     )
     
