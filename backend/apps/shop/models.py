@@ -27,6 +27,7 @@ class Products(models.Model):
     category = models.ForeignKey(Categories, on_delete=models.PROTECT, verbose_name='Категория')
     status = models.BooleanField(default=True)
     created = models.DateTimeField('Дата создания', auto_now_add=True)
+    favorites = models.ManyToManyField(User, verbose_name="Избранное", related_name="favorites_users")
 
     class Meta:
         ordering = ['-created']
@@ -49,8 +50,6 @@ class RatingStar(models.Model):
         ordering = ["-value"]
 
 
-
-  
 class Reviews(models.Model):
     email = models.EmailField()
     name = models.CharField("Имя", max_length=100)

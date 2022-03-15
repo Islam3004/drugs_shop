@@ -2,11 +2,9 @@ from django import forms
 from .models import *
 
 class ReviewsForm(forms.ModelForm):
-
     star = forms.ModelChoiceField(
         queryset=RatingStar.objects.all(), widget=forms.RadioSelect(attrs={"class":"form-control"}), empty_label=None
     )
-
     class Meta:
         model = Reviews
         fields = ('email', 'name', 'text','star')

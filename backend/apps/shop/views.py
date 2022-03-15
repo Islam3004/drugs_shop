@@ -1,14 +1,16 @@
 
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, View, CreateView
-from .models import Products, Reviews, Categories, RatingStar
-from .forms import ReviewsForm
-from backend.apps.cart.forms import CartAddProductForm
-from backend.apps.cart.cart import Cart
 from django.views.generic.edit import FormMixin
 from django.shortcuts import get_object_or_404
+from django.core.paginator import Paginator
+
+from backend.apps.cart.forms import CartAddProductForm
+from backend.apps.cart.cart import Cart
+from .models import Products, Reviews, Categories, RatingStar
+from .forms import ReviewsForm
+
 # Create your views here.
-"""Класс для главной страницы"""
 class HomeView(ListView):
     template_name = 'index.html'
     model = Products
@@ -24,7 +26,6 @@ class HomeView(ListView):
     
     
 
-"""Класс для вывода всех продуктов"""
 class ProductListView(ListView):
     template_name = 'store.html'
     model = Products
@@ -32,61 +33,68 @@ class ProductListView(ListView):
     paginate_by = 9
 
     def get_queryset(self, **kwargs):
+        category_slug = self.kwargs.get("category_slug")
         search_query = self.request.GET.get("q", '')
         if search_query:
             queryset = self.model.objects.filter(title__icontains=self.request.GET.get("q", ''))
             return queryset
-        category_slug = self.kwargs.get("category_slug")
         if category_slug:
             category = get_object_or_404(Categories, slug=category_slug)
             queryset = self.model.objects.filter(status=True, category=category)
             return queryset
-        price_min_query = self.request.GET.get("min", "")
-        if price_min_query:
-            queryset = self.model.objects.filter(quantity__icontains=self.request.GET.get("min",''))
-            return queryset
         queryset = self.model.objects.filter(status=True)
         return queryset
 
-"""Класс для вывода детальной информации о продукте и отзывах"""  
 
+
+def product_detail(request, slug):
+    product = Products.objects.get(slug=slug, status=True)
+    if request.method == "GET":
+        related_product = Products.objects.filter(status=True, category=product.category)
+        reviews = Reviews.objects.select_related('product').filter(product=product.id)
+
+        paginator = Paginator(reviews, 5)
+        page_number = request.GET.get('page', 1)
+        page = paginator.get_page(page_number)
+        is_paginated = page.has_other_pages()
+        if page.has_previous():
+            prev_url = '?page={}'.format(page.previous_page_number())
+        else:
+            prev_url = ''
+        if page.has_next():
+            next_url = '?page={}'.format(page.next_page_number())
+        else:
+            next_url = ''
+
+        context = {
+            'product': product, 
+            'related_product': related_product,
+            'reviews': reviews,
+            'form': CartAddProductForm,
+            'star_form': ReviewsForm,
+            'price_with_discount': float(product.price) - (float(product.price)*(product.discount/100)) if product.discount else 0,
+            'page_object': page,
+            'is_paginated': is_paginated,
+            'next_url': next_url,
+            'prev_url': prev_url,
+
+        }
+        return render(request, 'product.html', context=context)
     
-
-class ProductDetailView(FormMixin, DetailView):
-    template_name = 'product.html'
-    model = Products
-    context_object_name = 'product'
-    form_class = CartAddProductForm
-
-    def get_context_data(self, **kwargs):
-        context = super(ProductDetailView, self).get_context_data(**kwargs)
-        related_product = Products.objects.filter(status=True, category=self.object.category)
-        reviews = Reviews.objects.select_related('product').filter(product=self.object.id)
-        reviews_stars = Reviews.objects.filter()
-        context['related_product'] = related_product[:4] if len(related_product) > 4 else related_product
-        context["star_form"] = ReviewsForm
-        context["reviews"] = reviews[:3] if len(reviews) > 3 else reviews
-        context['price_with_discount'] = float(self.get_object().price) - (float(self.get_object().price)*(self.get_object().discount/100)) if self.get_object().discount else 0
-        context['form'] = self.form_class
-        return context
-    
-    def post(self, request, *args, **kwargs):
-        product = self.get_object()
-        form = self.form_class(request.POST)
+    elif request.method == "POST":
+        form = CartAddProductForm(request.POST)
         if form.is_valid():
             cart = Cart(request)
             cart.add(product=product, quantity=form.cleaned_data.get('quantity'), update_quantity=form.cleaned_data.get('update'))
-            return redirect('product_detail_url', self.get_object().slug)
+            return redirect('product_detail_url', product.slug)
 
 
-"""Класс для добавления отзывов"""
+
 class AddReview(CreateView):
     def post(self, request, pk):
         form = ReviewsForm(request.POST)
         product = Products.objects.get(id=pk)
-        print(product)
         rating = RatingStar.objects.get(value=int(request.POST.get('star')))
-        print(rating)
         if request.user.is_authenticated:
             if form.is_valid():
                 Reviews.objects.create(
@@ -96,23 +104,20 @@ class AddReview(CreateView):
                     text=request.POST.get('text'),
                     star=rating,
                 )
-
-            return redirect("login")
-        return redirect("product_detail_url", product.slug)
-
+            return redirect("product_detail_url", product.slug)
+        return redirect("login")
 
 
-class ReviewsView(DetailView):
-    template_name = 'reviews.html'
-    model = Products
-    context_object_name = 'product'
-
-
-    def get_context_data(self, **kwargs):
-        context = super(ReviewsView, self).get_context_data(**kwargs)
-        reviews = Reviews.objects.select_related('product').filter(product=self.object.id)
-        context["reviews"] = reviews
-        return context
+def add_favorites(request, id):
+    product = get_object_or_404(Products, id=id)
+    if request.user.is_authenticated:
+        if request.user not in product.favorites.all():
+            product.favorites.add(request.user)
+            return redirect("index_url")
+        else:
+            product.favorites.remove(request.user)
+            return redirect("index_url")
+    return redirect("login")
 
 
 
