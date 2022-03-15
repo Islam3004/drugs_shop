@@ -29,7 +29,7 @@ class Products(models.Model):
     created = models.DateTimeField('Дата создания', auto_now_add=True)
 
     class Meta:
-        ordering = ['-discount']
+        ordering = ['-created']
         verbose_name = 'Товар'
         verbose_name_plural = 'Товары'
 

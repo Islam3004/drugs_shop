@@ -4,17 +4,19 @@ from backend.apps.shop.models import Products
 # Create your models here.
 
 class Order(models.Model):
-    name = models.CharField('Имя', max_length=150)
+    fio = models.CharField('ФИО', max_length=150)
     phone_number = models.CharField('Номер телефона', max_length=150)
     email = models.EmailField('Электронная почта')
     address = models.CharField('Адрес', max_length=200)
     post_code = models.CharField('Почтовый Индекс', max_length=200)
     total_sum = models.DecimalField("Общая сумма",max_digits=10, decimal_places=2)
     bank_card = models.CharField('Банковская карта', max_length=20)
+    status = models.BooleanField(default=False)
     created = models.DateTimeField("Создание", auto_now_add=True, db_index=True)
+    
 
     def __str__(self):
-        return self.name
+        return self.fio
 
     class Meta:
         verbose_name = 'Заказ'

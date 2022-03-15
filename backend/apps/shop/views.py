@@ -9,14 +9,23 @@ from django.views.generic.edit import FormMixin
 from django.shortcuts import get_object_or_404
 
 # Create your views here.
-
-
-
+"""Класс для главной страницы"""
 class HomeView(ListView):
     template_name = 'index.html'
-    queryset = Products.objects.filter(status=True)
+    model = Products
+    context_object_name = 'products'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        new_products = Products.objects.filter(status=True)
+        products_with_discount = Products.objects.order_by('-discount')
+        context["new_products"] = new_products[:10] if len(new_products) > 10 else new_products
+        context["products_with_discount"] = products_with_discount
+        return context
+    
+    
 
+"""Класс для вывода всех продуктов"""
 class ProductListView(ListView):
     template_name = 'store.html'
     model = Products
@@ -41,26 +50,35 @@ class ProductListView(ListView):
         return queryset
 
     
+
 class ProductDetailView(FormMixin, DetailView):
     template_name = 'product.html'
     model = Products
     context_object_name = 'product'
     form_class = CartAddProductForm
 
-
     def get_context_data(self, **kwargs):
         context = super(ProductDetailView, self).get_context_data(**kwargs)
         related_product = Products.objects.filter(status=True, category=self.object.category)
         reviews = Reviews.objects.select_related('product').filter(product=self.object.id)
-        reviews_stars = Reviews.objects.filter()
         context['related_product'] = related_product[:4] if len(related_product) > 4 else related_product
         context["star_form"] = ReviewsForm
         context["reviews"] = reviews[:3] if len(reviews) > 3 else reviews
+        context['price_with_discount'] = float(self.get_object().price) - (float(self.get_object().price)*(self.get_object().discount/100)) if self.get_object().discount else 0
+        context['form'] = self.form_class
         return context
+    
+    def post(self, request, *args, **kwargs):
+        product = self.get_object()
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            cart = Cart(request)
+            cart.add(product=product, quantity=form.cleaned_data.get('quantity'), update_quantity=form.cleaned_data.get('update'))
+            return redirect('product_detail_url', self.get_object().slug)
 
 
+"""Класс для добавления отзывов"""
 class AddReview(CreateView):
-
     def post(self, request, pk):
         form = ReviewsForm(request.POST)
         product = Products.objects.get(id=pk)
@@ -74,9 +92,9 @@ class AddReview(CreateView):
                     text=request.POST.get('text'),
                     star=rating,
                 )
-            return redirect(f"/product/{product.id}/")
-        return redirect("/registration/login")
 
+            return redirect("product_detail_url", product.slug)
+        return redirect("login")
 
 
 

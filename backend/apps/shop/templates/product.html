@@ -2,10 +2,29 @@
 {% load static %}
 
 {% block title %}
-	Product
+	{{ product.title }}
 {% endblock %}
 	
-{% block content %}
+{% block content %}	
+	<!-- BREADCRUMB -->
+	<div id="breadcrumb" class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+				<div class="col-md-12">
+					<ul class="breadcrumb-tree">
+						<li><a href="{% url 'products_list_url' %}">Товары</a></li>
+						<li><a href="{% url 'category_list' product.category.slug %}">{{ product.category.title }}</a></li>
+						<li class="active">{{ product.title }}</li>
+					</ul>
+				</div>
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+
 	<!-- SECTION -->
 	<div class="section">
 		<!-- container -->
@@ -15,20 +34,8 @@
 				<!-- Product main img -->
 				<div class="col-md-5 col-md-push-2">
 					<div id="product-main-img">
-						<div class="product-preview">
+						<div class="">
 							<img src="{{ product.image.url }}" alt="">
-						</div>
-
-						<div class="product-preview">
-							<img src="./img/product03.png" alt="">
-						</div>
-
-						<div class="product-preview">
-							<img src="./img/product06.png" alt="">
-						</div>
-
-						<div class="product-preview">
-							<img src="./img/product08.png" alt="">
 						</div>
 					</div>
 				</div>
@@ -68,39 +75,35 @@
 								<i class="fa fa-star"></i>
 								<i class="fa fa-star-o"></i>
 							</div>
-							<a class="review-link" href="#">{{ stars }} Review(s) | Add your review</a>
+							<a class="review-link" href="#">{{ reviews.count }} Review(s) | Add your review</a>
 						</div>
 						<div>
-							<h3 class="product-price">{{ product.price }}</h3>
+							<h3 class="product-price">{{ price_with_discount }}</h3>
 						</div>
 						<p>{{ product.description|safe }}</p>
 
-
-						<div class="add-to-cart">
-							<div class="qty-label">
-								Qty
-								<div class="input-number">
-									<input type="number">
-									<span class="qty-up">+</span>
-									<span class="qty-down">-</span>
+						<form method='post'>
+							<div class="add-to-cart">
+								<div class="qty-label">
+									Количество
+									<div class="input-number">
+										{% csrf_token %}
+										{{ form.quantity }}
+										<span class='qty-up'>+</span>
+										<span class='qty-down'>-</span>
+									</div>
 								</div>
+								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>В Корзину</button>
 							</div>
-							<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-						</div>
+						</form>
 
-						<ul class="product-btns">
-							<li><a href="#"><i class="fa fa-heart-o"></i> add to wishlist</a></li>
-							<li><a href="#"><i class="fa fa-exchange"></i> add to compare</a></li>
+						<ul class="product-links">
+							<li>Категория:</li>
+							<li><a href="{% url 'category_list' product.category.slug %}">{{ product.category.title }}</a></li>
 						</ul>
 
 						<ul class="product-links">
-							<li>Category:</li>
-							<li><a href="#">Headphones</a></li>
-							<li><a href="#">Accessories</a></li>
-						</ul>
-
-						<ul class="product-links">
-							<li>Share:</li>
+							<li>Поделиться:</li>
 							<li><a href="#"><i class="fa fa-facebook"></i></a></li>
 							<li><a href="#"><i class="fa fa-twitter"></i></a></li>
 							<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
@@ -151,7 +154,7 @@
 									<div class="col-md-3">
 										<div id="rating">
 											<div class="rating-avg">
-												<span>4.5</span>
+												<span>{{ stars }}</span>
 												<div class="rating-stars">
 													<i class="fa fa-star"></i>
 													<i class="fa fa-star"></i>
@@ -355,35 +358,45 @@
 
 				<!-- product -->
 				{% for product in related_product %}
-				<a href="{% url 'product_detail_url' product.id %}">
-				<div class="col-md-3 col-xs-6">
-					<div class="product">
-						<div class="product-img">
-							<img src="{{ product.image.url }}" alt="">
-						</div>
+					<div class="col-md-3 col-xs-6">
+						<a href="{% url 'product_detail_url' product.slug %}">
+							<div class="product">
+								<div class="product-img">
+									<div class="product-label">
+										{% if product.discount %}
+											<span class="new">-{{ product.discount }}%</span>
+										{% endif %}
+									</div>
+										<img class="image" src="{{ product.image.url }}" alt="404">
+										
+									</div>
 
-						<div class="product-body">
-							<p class="product-category">{{product.category}}</p>
-							<p class="product-category">{{product.name}}</p>
-							<h3 class="product-name"><a href="{% url 'product_detail_url' product.id %}">{{ product.name }}</a></h3>
-							<h4 class="product-price">{{product.price}}<del class="product-old-price">{{product.price}}</del></h4>
-							<div class="product-rating">
-							</div>
-							<div class="product-btns">
-								<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
-								<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
-								<a class="product-btns" href="{% url 'product_detail_url' product.id %}">
-									<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
-								</a>
-							</div>
-						</div>
+								<div class="product-body">
+									<p class="product-category">{{product.category}}</p>
+									<h3 class="product-name">{{ product.title }}</h3>
+									<h3 class="product-name"><a href="{ url 'product_detail_url' product.id }">{{ product.name }}</a></h3>
+									{% if product.discount %}
+												<h4 class="product-price">{{ product.price }} сом<del class="product-old-price">{{ product.price }} сом</del></h4>
+											{% else %}
+												<h4 class="product-price">{{ product.price }} сом</h4>
+											{% endif %}
+										<div class="product-rating">
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+										</div>
+								</div>
 
-						<div class="add-to-cart">
-							<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-						</div>
+								<div class="add-to-cart">
+									<a href="{% url 'add_cart_url' product.id %}">
+										<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>Добавить в Корзину</button>
+									</a>
+								</div>
+							</div>
+						</a>
 					</div>
-				</div>
-					</a>
 				{% endfor %}
 
 				<!-- /product -->
@@ -395,41 +408,6 @@
 	</div>
 	<!-- /Section -->
 
-	<!-- NEWSLETTER -->
-	<div id="newsletter" class="section">
-		<!-- container -->
-		<div class="container">
-			<!-- row -->
-			<div class="row">
-				<div class="col-md-12">
-					<div class="newsletter">
-						<p>Sign Up for the <strong>NEWSLETTER</strong></p>
-						<form>
-							<input class="input" type="email" placeholder="Enter Your Email">
-							<button class="newsletter-btn"><i class="fa fa-envelope"></i> Subscribe</button>
-						</form>
-						<ul class="newsletter-follow">
-							<li>
-								<a href="#"><i class="fa fa-facebook"></i></a>
-							</li>
-							<li>
-								<a href="#"><i class="fa fa-twitter"></i></a>
-							</li>
-							<li>
-								<a href="#"><i class="fa fa-instagram"></i></a>
-							</li>
-							<li>
-								<a href="#"><i class="fa fa-pinterest"></i></a>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-			<!-- /row -->
-		</div>
-		<!-- /container -->
-	</div>
-	<!-- /NEWSLETTER -->
 
 {% endblock %}
 

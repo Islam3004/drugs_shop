@@ -2204,3 +2204,9 @@ color: #078600;
 .parent {
     padding: 0 50px;
 }
+
+.form form {
+  width: 300px;
+  margin: 0 auto;
+  padding-top: 20px;
+}
