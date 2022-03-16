@@ -3,7 +3,8 @@ ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV TZ=Asia/Bishkek
 
-RUN apk add --no-cache gcc postgresql-dev \
+RUN apk add --no-cache  python3 python-dev python3-dev \
+    gcc postgresql-dev \
     linux-headers musl-dev libffi-dev \
     libxml2-dev libxslt-dev imagemagick-dev \
     zlib-dev py3-magic  make \
