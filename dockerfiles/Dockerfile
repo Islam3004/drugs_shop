@@ -10,6 +10,7 @@ RUN apk add --no-cache gcc postgresql-dev \
     && rm -rf /var/apt/list/*
 WORKDIR /app
 
+COPY requirements.txt requirements.txt
 
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
