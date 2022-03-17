@@ -8,3 +8,4 @@ urlpatterns = [
     path('clear/', cart_clear, name='clear_cart_url'), 
     path('checkout/', CheckoutView.as_view(), name='checkout_url')
 ]
+
