@@ -21,6 +21,10 @@ class HomeView(ListView):
         context = super().get_context_data(**kwargs)
         new_products = Products.objects.filter(status=True)
         products_with_discount = Products.objects.order_by('-discount')
+        for product in new_products:
+            product.price_with_discount = float(product.price) - (float(product.price)*(product.discount/100)) if product.discount else 0
+        for product in products_with_discount:
+            product.price_with_discount = float(product.price) - (float(product.price)*(product.discount/100)) if product.discount else 0
         context["new_products"] = new_products[:10] if len(new_products) > 10 else new_products
         context["products_with_discount"] = products_with_discount
         return context
@@ -52,7 +56,12 @@ class ProductListView(ListView):
             queryset = self.model.objects.filter(status=True, category=category)
             return queryset
         queryset = self.model.objects.filter(status=True)
+        for product in queryset:
+            product.price_with_discount = float(product.price) - (float(product.price)*(product.discount/100)) if product.discount else 0
         return queryset
+    
+
+    
 
 
 def product_detail(request, slug):
@@ -92,6 +101,9 @@ def product_detail(request, slug):
     elif request.method == "POST":
         form = CartAddProductForm(request.POST)
         if form.is_valid():
+            data = form.cleaned_data['quantity']
+            if data <= 0:
+                return redirect('product_detail_url', product.slug)
             cart = Cart(request)
             cart.add(product=product, quantity=form.cleaned_data.get('quantity'), update_quantity=form.cleaned_data.get('update'))
             return redirect('product_detail_url', product.slug)
@@ -114,6 +126,7 @@ class AddReview(CreateView):
                 )
             return redirect("product_detail_url", product.slug)
         return redirect("login")
+
 
 
 class ReviewsView(DetailView):
@@ -140,6 +153,16 @@ def add_favorites(request, id):
     return redirect("login")
 
 
+
+def get_favorites_product(request):
+    if request.user.is_authenticated:
+        favorites = Products.objects.filter(favorites=request.user)
+        context = {
+            'favorites':favorites
+        }
+        return render(request, 'favorites.html', context=context)
+    else:
+        return redirect('login')
 
 
 

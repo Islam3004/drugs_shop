@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-^+kxexr%9_$!f5+&%9gva+w+!6r&imufb&^&$o^9zda*k6f+43
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -88,11 +88,11 @@ WSGI_APPLICATION = 'backend.config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'django_db',
-        'USER' : 'anonymous',
-        'PASSWORD' : 'password',
-        'HOST' : '127.0.0.1',
-        'PORT' : '5432',
+        'NAME': os.getenv("POSTGRES_DB",default='django_db'),
+        'USER' : os.getenv("POSTGRES_USER",default='anonymous'),
+        'PASSWORD' : os.getenv("POSTGRES_PASSWORD",default='password'),
+        'HOST' : os.getenv("POSTGRES_HOST",default='127.0.0.1'),
+        'PORT' : os.getenv("POSTGRES_PORT", default='5432'),
     }
 }
 
@@ -132,9 +132,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, "static")
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_URL = "/drugs_shop/backend/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "/drugs_shop/backend/static")
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")

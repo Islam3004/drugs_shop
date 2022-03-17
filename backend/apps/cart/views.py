@@ -9,7 +9,9 @@ from .models import Order, OrderItem
 
 def CartPageView(request):
     cart = Cart(request)
-    context = {'cart': cart, 'number_of_cart': len(cart),}
+    context = {'cart': cart, 'number_of_cart': len(cart)}
+    if request.user.is_authenticated:
+        context['favorites'] = Products.objects.filter(favorites=request.user)
     return context
 
 

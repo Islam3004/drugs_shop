@@ -1,9 +1,14 @@
 from django import forms
 from .models import Order
+from django.core.exceptions import ValidationError
+
 
 class CartAddProductForm(forms.Form):
     quantity = forms.IntegerField(widget=forms.NumberInput(attrs={'type': 'number'}))
     update = forms.BooleanField(required=False, initial=False, widget=forms.HiddenInput)
+
+    
+    
 
 class CheckoutForm(forms.ModelForm):
     class Meta:

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Избранное
+{% endblock %}
+
+{% block content %}
+<div class="main-container container">
+    <div class="row">
+        <!--Middle Part Start-->
+    <div id="content" class="col-sm-12">
+      <h2 class="title">Избранное</h2>
+      <br>
+        <div class="table-responsive form-group">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <td class="text-center">Фото</td>
+                <td class="text-left">Название товара</td>
+                <td class="text-left">Количество</td>
+                <td class="text-right">Цена за товар</td>
+              </tr>
+            </thead>
+            <tbody>
+            {% for product in favorites %}
+                  <tr>
+                    <td class="text-center"><a href="product.html"><img width="70px" src="{{ product.image.url }}" alt="Xitefun Causal Wear Fancy Shoes" title="Xitefun Causal Wear Fancy Shoes" class="img-thumbnail" /></a></td>
+                    <td class="text-left">
+                        <a href="{% url 'product_detail_url' product.slug %}">
+                            {{ product.title }}
+                        </a>
+                    </td>
+                    <td class="text-right">{{ product.price }}</td>
+                    <td class="text-right">
+                        <a href="{% url 'add_favorites' product.id %}">
+                            <button type="button" class="btn btn-danger">
+                                Удалить
+                            </button>
+                        </a>
+                    </td>
+                  </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+    <!--Middle Part End -->
+        
+    </div>
+</div>
+<!-- //Main Container -->
+{% endblock %}
