@@ -59,17 +59,6 @@
 					</div>
 					<!-- /aside Widget -->
 
-<<<<<<< HEAD
-					<!-- aside Widget -->
-
-
-					<!-- /aside Widget -->
-
-					<!-- aside Widget -->
-
-					<!-- /aside Widget -->
-=======
->>>>>>> 2d34fe9588f8833e20d029b316879690843cb481
 
 				</div>
 				<!-- /ASIDE -->
@@ -131,14 +120,14 @@
 										<div class="product-btns">
 											{% if request.user in product.favorites.all %}
 												<a href="{% url 'add_favorites' product.id %}">
-													<button class="add-to-wishlist"><i class="fa fa-heart"></i><span class="tooltipp"></span></button>
+													<i class="fa fa-heart"></i><span class="tooltipp"></span>
 												</a>
 											{% else %}
 												<a href="{% url 'add_favorites' product.id %}">
-													<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp"></span></button>
+													<i class="fa fa-heart-o"></i><span class="tooltipp"></span>
 												</a>
 											{% endif %}
-											<a href="{% url 'product_detail_url' product.slug %}"><button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp"></span></button></a>
+											<a href="{% url 'product_detail_url' product.slug %}"><i class="fa fa-eye"></i><span class="tooltipp"></span></a>
 										</div>
 									</div>
 									<div class="add-to-cart">

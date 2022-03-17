@@ -123,6 +123,7 @@ ul, ol {
   width: 100%;
 }
 
+
 textarea.input {
   padding: 15px;
   min-height: 90px;
@@ -871,7 +872,7 @@ textarea.input {
   text-align: center;
 }
 
-.product .product-img>img {
+.product .product-img a img {
   height: 226px;
 }
 
@@ -989,6 +990,10 @@ product-btns > .quick-view {
   border: none;
   -webkit-transition: 0.2s all;
   transition: 0.2s all;
+}
+
+.product-btns i {
+  color: #078600;
 }
 
 .product .product-body .product-btns>button:hover {

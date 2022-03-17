@@ -299,7 +299,7 @@
 											<ul class="reviews-pagination">
 												{% if is_paginated %}
 													{% if prev_url %}
-														<li><a href="?page={{ prev_url }}"><i class="fa fa-angle-left"></i></a></li>
+														<li><a href="{{ prev_url }}"><i class="fa fa-angle-left"></i></a></li>
 													{% endif %}
 
 													{% for n in page_object.paginator.page_range %}
@@ -311,7 +311,7 @@
 													{% endfor %}
 
 													{% if next_url %}
-														<li><a href="?page={{ next_url }}"><i class="fa fa-angle-right"></i></a></li>
+														<li><a href="{{ next_url }}"><i class="fa fa-angle-right"></i></a></li>
 													{% endif %}
 												{% endif %}
 											</ul>
@@ -385,7 +385,6 @@
 								{% endif %}
 							</div>
 								<img class="image" src="{{ product.image.url }}" alt="404">
-								
 							</div>
 						</a>
 						<div class="product-body">
@@ -406,14 +405,14 @@
 							<div class="product-btns">
 								{% if request.user in product.favorites.all %}
 									<a href="{% url 'add_favorites' product.id %}">
-										<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">Удалить из избранного</span></button>
+										<i class="fa fa-heart"></i><span class="tooltipp"></span>
 									</a>
 								{% else %}
 									<a href="{% url 'add_favorites' product.id %}">
-										<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">В избранное</span></button>
+										<i class="fa fa-heart-o"></i><span class="tooltipp"></span>
 									</a>
 								{% endif %}
-								<a href="{% url 'product_detail_url' product.slug %}"><button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">Просмотр</span></button></a>
+								<a href="{% url 'product_detail_url' product.slug %}"><i class="fa fa-eye"></i></a>
 							</div>
 						</div>
 						<div class="add-to-cart">
