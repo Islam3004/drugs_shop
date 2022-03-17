@@ -4,7 +4,7 @@
 
 
 {% block title %}
-	store
+	Store
 {% endblock %}
 
 
@@ -106,7 +106,7 @@
 										<a href="{% url 'category_list' product.category.slug %}"><p class="product-category">{{ product.category }}</p></a>
 										<a href="{% url 'product_detail_url' product.slug %}"><h3 class="product-name">{{ product.title }}</h3></a>
 										{% if product.discount %}
-											<h4 class="product-price">{{ product.price }} сом<del class="product-old-price">{{ product.price }} сом</del></h4>
+											<h4 class="product-price">{{ product.price_with_discount }} сом<del class="product-old-price">{{ product.price }} сом</del></h4>
 										{% else %}
 											<h4 class="product-price">{{ product.price }} сом</h4>
 										{% endif %}
@@ -119,22 +119,18 @@
 										</div>
 										<div class="product-btns">
 											{% if request.user in product.favorites.all %}
-												<a href="{% url 'add_favorites' product.id %}">
-													<button class="add-to-wishlist"><i class="fa fa-heart"></i><span class="tooltipp"></span></button>
-												</a>
+												<button class="add-to-wishlist"><a href="{% url 'add_favorites' product.id %}"><i class="fa fa-heart"></i><span class="tooltipp">Удалить из избранного</span></a></button>
 											{% else %}
-												<a href="{% url 'add_favorites' product.id %}">
-													<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp"></span></button>
-												</a>
+												<button class="add-to-wishlist"><a href="{% url 'add_favorites' product.id %}"><i class="fa fa-heart-o"></i><span class="tooltipp">Добавить в избранное</span></a></button>
 											{% endif %}
-											<a href="{% url 'product_detail_url' product.slug %}"><button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp"></span></button></a>
+											<button class="quick-view"><a href="{% url 'product_detail_url' product.slug %}"><i class="fa fa-eye"></i><span class="tooltipp">Детальная информация</span></a></button>
+										 </div>
 										</div>
-									</div>
-									<div class="add-to-cart">
-										<a href="{% url 'add_cart_url' product.id %}">
-											<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>Добавить в Корзину</button>
-										</a>
-									</div>
+										<div class="add-to-cart">
+											<a href="{% url 'add_cart_url' product.id %}">
+												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>Добавить в Корзину</button>
+											</a>
+										</div>
 								</div>
 						</div>
 						{% endfor %}

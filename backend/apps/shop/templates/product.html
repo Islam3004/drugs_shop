@@ -75,10 +75,14 @@
 								<i class="fa fa-star"></i>
 								<i class="fa fa-star-o"></i>
 							</div>
-							<a class="review-link" href="#">{{ stars }} Review(s) | Add your review</a>
+							<a class="review-link" href="#">{{ stars }} Отзывов ({{ reviews.count }}) | Добавьте свой отзыв</a>
 						</div>
 						<div>
-							<h3 class="product-price">{{ price_with_discount }}</h3>
+							{% if product.discount %}
+								<h4 class="product-price">{{ price_with_discount }} сом<del class="product-old-price">{{ product.price }} сом</del></h4>
+							{% else %}
+								<h4 class="product-price">{{ product.price }} сом</h4>
+							{% endif %}
 						</div>
 						<p>{{ product.description|safe }}</p>
 
@@ -97,6 +101,8 @@
 								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>В Корзину</button>
 							</div>
 						</form>
+
+						
 
 						<ul class="product-links">
 							<li>Категория:</li>
@@ -176,7 +182,7 @@
 													<div class="rating-progress">
 														<div style="width: 80%;"></div>
 													</div>
-													<span class="sum">3</span>
+													<span class="sum">4</span>
 												</li>
 												<li>
 													<div class="rating-stars">
@@ -331,7 +337,7 @@
 												<label for="{{star_form.text.id_for_label}}">Отзыв:</label>
 												{{ star_form.text }}
 												<div class="input-rating">
-													<span>Your Rating: </span>
+													<span>Твоя оценка: </span>
 													<div class="stars">
 														{% for k, v in star_form.fields.star.choices %}
 																<input id="rating{{ v }}" type="radio" name="star"
@@ -405,16 +411,12 @@
 							</div>
 							<div class="product-btns">
 								{% if request.user in product.favorites.all %}
-									<a href="{% url 'add_favorites' product.id %}">
-										<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">Удалить из избранного</span></button>
-									</a>
+									<button class="add-to-wishlist"><a href="{% url 'add_favorites' product.id %}"><i class="fa fa-heart"></i><span class="tooltipp">Удалить из избранного</span></a></button>
 								{% else %}
-									<a href="{% url 'add_favorites' product.id %}">
-										<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">В избранное</span></button>
-									</a>
+									<button class="add-to-wishlist"><a href="{% url 'add_favorites' product.id %}"><i class="fa fa-heart-o"></i><span class="tooltipp">Добавить в избранное</span></a></button>
 								{% endif %}
-								<a href="{% url 'product_detail_url' product.slug %}"><button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">Просмотр</span></button></a>
-							</div>
+								<button class="quick-view"><a href="{% url 'product_detail_url' product.slug %}"><i class="fa fa-eye"></i><span class="tooltipp">Детальная информация</span></a></button>
+							 </div>
 						</div>
 						<div class="add-to-cart">
 							<a href="{% url 'add_cart_url' product.id %}">

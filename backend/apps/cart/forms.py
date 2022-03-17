@@ -1,9 +1,19 @@
 from django import forms
 from .models import Order
+from django.core.exceptions import ValidationError
+
 
 class CartAddProductForm(forms.Form):
     quantity = forms.IntegerField(widget=forms.NumberInput(attrs={'type': 'number'}))
     update = forms.BooleanField(required=False, initial=False, widget=forms.HiddenInput)
+
+    def clean_field(self):
+        data = self.cleaned_data["quantity"]
+        if int(data) >= 0:
+            raise ValidationError("Количество продуктов не может быть отрицательным!")
+        return data
+    
+    
 
 class CheckoutForm(forms.ModelForm):
     class Meta:

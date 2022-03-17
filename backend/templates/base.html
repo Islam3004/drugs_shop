@@ -101,44 +101,17 @@
 						<!-- ACCOUNT -->
 						<div class="col-md-3 clearfix">
 							<div class="header-ctn">
-								{% comment %} {% if request.user.is_authenticated %}
-									<div class="dropdown">
-										<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-											<i class="fa fa-heart-o"></i>
-											<span>Избранное</span>
-											{% if favorites %}
-												<div class="qty">{{ favorites.count }}</div>
-											{% endif %}
-										</a>
-										<div class="cart-dropdown">
-											<div class="cart-list">
-												{% for item in favorites %}
-													<div class="product-widget">
-														<div class="product-img">
-															<img src="{{ item.image.url }}" alt="">
-														</div>
-														<div class="product-body">
-															<h3 class="product-name"><a href="{% url 'product_detail_url' item.slug %}">{{ item.title }}</a></h3>
-															<h4 class="product-price"><span class="qty"></span>{{ item.price }}</h4>
-														</div>
-														{% if request.user in item.favorites.all %}
-															<a href="{% url 'add_favorites' item.id %}">
-																<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">Удалить из избранного</span></button>
-															</a>
-														{% else %}
-															<a href="{% url 'add_favorites' item.id %}">
-																<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">В избранное</span></button>
-															</a>
-														{% endif %}
-													</div>
-												{% endfor %}
-											</div>
-										</div>
-									</div>
-
-								{% else %}
-									<a href="{% url 'login' %}"><i class="fa fa-heart-o"></i></a>
-								{% endif %} {% endcomment %}
+								<!-- Wishlist -->
+								<div>
+									<a href="{% url 'favorites' %}">
+										<i class="fa fa-heart-o"></i>
+										<span>Избранное</span>
+										{% if favorites %}
+											<div class="qty">{{ favorites.count }}</div>
+										{% endif %}
+									</a>
+								</div>
+								<!-- /Wishlist -->
 
 								<!-- Cart -->
 								<div class="dropdown">
