@@ -7,3 +7,4 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(next_page='index_url'), name='logout'),
     path('register/', RegisterPage.as_view(), name='register'),
 ]
+
