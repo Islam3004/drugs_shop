@@ -13,6 +13,8 @@ class CustomLoginView(LoginView):
     redirect_authenticated_user = True
 
     def get_success_url(self):
+        if self.request.user.is_staff:
+            return reverse_lazy('order_list_url')
         return reverse_lazy('products_list_url')
 
 class RegisterPage(FormView):

@@ -12,6 +12,7 @@ class ProductsAdminForm(forms.ModelForm):
         model = Products
         fields = '__all__'
 
+admin.site.register(RatingStar)
 class ReviewsAdminForm(forms.ModelForm):
     text = forms.CharField(label="Комментарий", widget=CKEditorUploadingWidget())
 
@@ -35,7 +36,7 @@ class CategoriesAdmin(admin.ModelAdmin):
 
 @admin.register(Products)
 class ProductsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'get_image', 'quantity', 'price', 'discount', 'status', 'created')
+    list_display = ('id', 'title', 'get_image', 'price', 'discount', 'status', 'created')
     list_filter = ('category', 'created', 'status')
     search_fields = ('title', 'category__title', 'price')
     list_editable = ('status',)
@@ -56,7 +57,7 @@ class ProductsAdmin(admin.ModelAdmin):
         }),
 
         ("Количество товара, скидка и цена", {
-            "fields": (('price', 'discount', 'quantity'),'status', 'favorites')
+            "fields": (('price', 'discount'),'status', 'favorites')
         }),  
     )
     

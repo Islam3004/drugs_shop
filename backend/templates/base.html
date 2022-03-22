@@ -88,7 +88,7 @@
 									<select onchange="window.location.href = this.options[this.selectedIndex].value" class="input-select" value="id" style="outline:none; width:150px;">
 									<option disabled selected>Категории</option>
 										<option value="{%  url 'products_list_url' %}"><value href="{% url 'products_list_url'%}">Все</value> </option>
-										{% for category in categories%}
+										{% for category in categories %}
 											<option value="{%  url 'category_list' category.slug %}"><value href="{% url 'category_list' category.slug %}"> {{ category.title}} </value> </option>
 										{% endfor %}
 									</select>
@@ -146,7 +146,7 @@
 												<div class="cart-btns">
 										
 													<a href="{% url 'clear_cart_url' %}">Очистить</a>
-													<a href="{% url 'checkout_url' %}">Купить  <i class="fa fa-arrow-circle-right"></i></a>
+													<a href="{% url 'cart_url' %}">В корзину  <i class="fa fa-arrow-circle-right"></i></a>
 												</div>
 											{% else	%}
 												<h5>Корзина пустая!</h5>

@@ -24,7 +24,6 @@ urlpatterns = [
     path('account/', include('backend.apps.user.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('cart/', include('backend.apps.cart.urls')),
-    # path('map/', include('backend.apps.map.urls')),
     path('curier/', include('backend.apps.curier.urls'))
 ]
 

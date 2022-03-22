@@ -3,9 +3,6 @@ from .views import *
 
 urlpatterns = [
     path('', HomeView.as_view(), name='index_url'),
-    path('box', BoxView.as_view(), name='box'),
-    path('car', CarView.as_view(), name='car'),
-    path('ship', ShipView.as_view(), name='ship'),
     path('products/', ProductListView.as_view(), name='products_list_url'),
     path('product/<slug:slug>/', product_detail, name='product_detail_url'),
     path('product/favorites/<int:id>/', add_favorites, name='add_favorites'),

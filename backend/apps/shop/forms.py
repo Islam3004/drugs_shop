@@ -8,10 +8,8 @@ class ReviewsForm(forms.ModelForm):
     )
     class Meta:
         model = Reviews
-        fields = ('email', 'name', 'text','star')
+        fields = ('text','star')
         widgets = {
-            "email": forms.EmailInput(attrs={"class":"form-control"}),
-            "name": forms.TextInput(attrs={"class":"form-control"}),
             "text": forms.TextInput(attrs={"class":"form-control", "type":"text"}),
         }
 

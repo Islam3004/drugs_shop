@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 
 
 class CartAddProductForm(forms.Form):
-    quantity = forms.IntegerField(widget=forms.NumberInput(attrs={'type': 'number'}))
+    quantity = forms.IntegerField(widget=forms.NumberInput(attrs={"class": "form-control", "style":"width:60px;"}))
     update = forms.BooleanField(required=False, initial=False, widget=forms.HiddenInput)
 
     

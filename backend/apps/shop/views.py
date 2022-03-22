@@ -3,7 +3,6 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, View, CreateView, TemplateView
 from django.views.generic.edit import FormMixin
 from django.shortcuts import get_object_or_404
-
 from django.core.paginator import Paginator
 
 from backend.apps.cart.forms import CartAddProductForm
@@ -12,6 +11,7 @@ from .models import Products, Reviews, Categories, RatingStar
 from .forms import ReviewsForm
 
 # Create your views here.
+
 class HomeView(ListView):
     template_name = 'index.html'
     model = Products
@@ -26,24 +26,16 @@ class HomeView(ListView):
         for product in products_with_discount:
             product.price_with_discount = float(product.price) - (float(product.price)*(product.discount/100)) if product.discount else 0
         context["new_products"] = new_products[:10] if len(new_products) > 10 else new_products
-        context["products_with_discount"] = products_with_discount
+        context["products_with_discount"] = products_with_discount[:10] if len(products_with_discount) > 10 else products_with_discount
         return context
 
-class BoxView(TemplateView):
-    template_name = "box.html"
-
-class ShipView(TemplateView):
-    template_name = "ship.html"
-
-class CarView(TemplateView):
-    template_name = "cars.html"
-    
 
 class ProductListView(ListView):
     template_name = 'store.html'
     model = Products
     context_object_name = 'products'
     paginate_by = 9
+    
 
     def get_queryset(self, **kwargs):
         category_slug = self.kwargs.get("category_slug")
@@ -69,6 +61,9 @@ def product_detail(request, slug):
     if request.method == "GET":
         related_product = Products.objects.filter(status=True, category=product.category)
         reviews = Reviews.objects.select_related('product').filter(product=product.id)
+        star = 0
+        for rating in reviews:
+            star += rating.star.value
 
         paginator = Paginator(reviews, 5)
         page_number = request.GET.get('page', 1)
@@ -82,6 +77,7 @@ def product_detail(request, slug):
             next_url = '?page={}'.format(page.next_page_number())
         else:
             next_url = ''
+            
 
         context = {
             'product': product, 
@@ -96,6 +92,8 @@ def product_detail(request, slug):
             'prev_url': prev_url,
 
         }
+        if star > 0:
+            context['rating'] = round(star/len(reviews))
         return render(request, 'product.html', context=context)
     
     elif request.method == "POST":
@@ -118,8 +116,7 @@ class AddReview(CreateView):
         if request.user.is_authenticated:
             if form.is_valid():
                 Reviews.objects.create(
-                    email=request.POST.get('email'),
-                    name=request.POST.get('name'),
+                    user=request.user,
                     product=product,
                     text=request.POST.get('text'),
                     star=rating,
@@ -140,6 +137,7 @@ class ReviewsView(DetailView):
         reviews = Reviews.objects.select_related('product').filter(product=self.object.id)
         context["reviews"] = reviews
         return context
+
 
 def add_favorites(request, id):
     product = get_object_or_404(Products, id=id)
