@@ -32,5 +32,5 @@ class OrderItem(models.Model):
     quantity = models.PositiveIntegerField("Количество", default=1)
 
     def __str__(self):
-        return self.order
+        return self.product.title
 

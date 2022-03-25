@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Корзина
+{% endblock %}
+
+{% block content %}
+<div class="main-container container">
+    <br>
+    
+    <div class="row">
+        <!--Middle Part Start-->
+    <div id="content" class="col-sm-12">
+      <h2 class="title">Корзина</h2>
+        <div class="table-responsive form-group">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <td class="text-center">фото</td>
+                <td class="text-left">Название товара</td>
+                <td class="text-left">Количество</td>
+                <td class="text-right">Цена за товар</td>
+                <td class="text-right">Общая цена</td>
+                <td class="text-right">Действия</td>
+              </tr>
+            </thead>
+            <tbody>
+            {% for item in cart %}
+                {% with product=item.product %}
+                  <tr>
+                    <td class="text-center"><a href="product.html"><img width="70px" src="{{product.image.url}}" alt="Xitefun Causal Wear Fancy Shoes" title="Xitefun Causal Wear Fancy Shoes" class="img-thumbnail" /></a></td>
+                    <td class="text-left">
+                        <a href="{% url 'product_detail_url' product.slug %}">
+                            {{ product.title }}
+                        </a>
+                    </td>
+                    <td>
+                        <form action="{% url 'add_cart_from_form' product.slug %}" method="post">
+                            {{ item.update_quantity_form.quantity }}
+                            {{ item.update_quantity_form.update }}
+                        <input type="submit" value="Обновить">
+                        {% csrf_token %}
+                    </form> 
+                    </td>
+                    <td class="text-right">{{ item.price }}</td>
+                    <td class="text-right">{{ item.total_price }}</td>
+                    <td class="text-right">
+                        <a href="{% url 'remove_cart_url' product.id %}">
+                            <button type="button" class="btn btn-danger">
+                                Удалить
+                            </button>
+                        </a>
+                    </td>
+                  </tr>
+                {% endwith %}
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">
+                    Корзина пуста
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+    
+    <div class="row">
+        <div class="col-sm-4 col-sm-offset-8">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="text-right">
+                            <strong>Общая сумма:</strong>
+                        </td>
+                        <td class="text-right">{{cart.get_total_price}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+     <div class="buttons">
+         <a href="{% url 'clear_cart_url' %}"> <button type="button" class="btn btn-warning"> Очистить корзину</button></a>
+        <div class="pull-right"><a href="{% url 'checkout_url' %}" class="btn btn-primary">Купить</a></div>
+      </div>
+    </div>
+    <!--Middle Part End -->
+        
+    </div>
+</div>
+<!-- //Main Container -->
+<br>
+<br>
+
+{% endblock %}
+

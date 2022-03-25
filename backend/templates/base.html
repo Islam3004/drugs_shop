@@ -52,7 +52,7 @@
 						<li><a href="https://github.com/Islam3004/drugs_shop.git"><i class="fa fa-envelope-o"></i>git@github.com</a></li>
 						<li><a href="https://www.google.com/maps/contrib/116392698331744132518/photos/@42.8789919,74.5956283,17z/data=!3m1!4b1!4m3!8m2!3m1!1e1"><i class="fa fa-map-marker"></i>Рыскулова 79Б Бишкек</a></li>
 					</ul>
-				</ul>
+
 				<ul class="header-links pull-right">
 					{% if request.user.is_authenticated %}
 						<li><a href="#"><i class="fa fa-user-o"></i>{{user.username}}</a></li>
@@ -74,8 +74,8 @@
 						<!-- LOGO -->
 						<div class="col-md-3">
 							<div class="header-logo">
-								<a href="#" class="logo">
-									<img src="./img/logo.png" alt="">
+								<a href="{% url 'index_url' %}" class="logo">
+									<img src="{% static '/img/logo2.png' %}" alt="">
 								</a>
 							</div>
 						</div>
@@ -88,7 +88,7 @@
 									<select onchange="window.location.href = this.options[this.selectedIndex].value" class="input-select" value="id" style="outline:none; width:150px;">
 									<option disabled selected>Категории</option>
 										<option value="{%  url 'products_list_url' %}"><value href="{% url 'products_list_url'%}">Все</value> </option>
-										{% for category in categories%}
+										{% for category in categories %}
 											<option value="{%  url 'category_list' category.slug %}"><value href="{% url 'category_list' category.slug %}"> {{ category.title}} </value> </option>
 										{% endfor %}
 									</select>
@@ -146,7 +146,7 @@
 												<div class="cart-btns">
 										
 													<a href="{% url 'clear_cart_url' %}">Очистить</a>
-													<a href="{% url 'checkout_url' %}">Купить  <i class="fa fa-arrow-circle-right"></i></a>
+													<a href="{% url 'cart_url' %}">В корзину  <i class="fa fa-arrow-circle-right"></i></a>
 												</div>
 											{% else	%}
 												<h5>Корзина пустая!</h5>

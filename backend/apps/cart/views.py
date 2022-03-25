@@ -11,9 +11,42 @@ def CartPageView(request):
     cart = Cart(request)
     context = {'cart': cart, 'number_of_cart': len(cart)}
     if request.user.is_authenticated:
-        context['favorites'] = Products.objects.filter(favorites=request.user)
+        favorites = Products.objects.filter(favorites=request.user)
+        for product in favorites:
+            product.price_with_discount = float(product.price) - (float(product.price)*(product.discount/100)) if product.discount else 0
+        context['favorites'] = favorites
+        context['favorites_products'] = favorites[:3] if len(favorites) > 3 else favorites
     return context
 
+def get_cart(request):
+    if request.user.is_authenticated:
+        cart = Cart(request)
+        for item in cart:
+            item['update_quantity_form'] = CartAddProductForm(
+                initial={'quantity': item['quantity'],
+                         'update': True
+                         }
+            )
+        context = {'cart': cart}
+        return render(request, 'cart.html', context=context)
+    else:
+        return redirect('login')
+
+def add_cart_from_form(request, slug):
+    cart = Cart(request)
+    product = Products.objects.get(slug=slug)
+    form = CartAddProductForm(request.POST)
+    if form.is_valid():
+        data = form.cleaned_data['quantity']
+        if data <= 0:
+            return redirect('cart_url')
+        cart.add(
+            product=product,
+            quantity=form.cleaned_data.get('quantity'),
+            update_quantity=form.cleaned_data.get('update')
+        )
+        return redirect('cart_url')
+    return redirect('cart_url')
 
 def cart_add(request, product_id):
     if request.user.is_authenticated:

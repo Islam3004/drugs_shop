@@ -11,7 +11,6 @@ class CustomLoginView(LoginView):
     template_name = "login.html"
     fields = '__all__'
     redirect_authenticated_user = True
-
     def get_success_url(self):
         return reverse_lazy('products_list_url')
 
@@ -26,3 +25,4 @@ class RegisterPage(FormView):
         if user is not None:
             login(self.request, user)
         return super(RegisterPage, self).form_valid(form)
+

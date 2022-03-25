@@ -2215,3 +2215,56 @@ color: #078600;
   margin: 0 auto;
   padding-top: 20px;
 }
+.search-btn {
+  height: 40px;
+  width: 100px;
+  background: #078600;
+  color: #FFF;
+  font-weight: 700;
+  border: none;
+  border-radius: 0px 40px 40px 0px;
+}
+
+.show-cart li {
+  display: flex;
+}
+.card {
+  margin-bottom: 20px;
+}
+.card-img-top {
+  width: 200px;
+  height: 200px;
+  align-self: center;
+}
+.favoritesRow{
+padding: 50px 0;
+    display:flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap:wrap;
+    }
+
+.navbarRow{
+padding: 10px;
+display: flex;
+column-gap: 10px;
+}
+.borderCol{
+border: 1px solid #00000020;
+border-radius: 10px;
+width: 280px;
+padding: 10px 0;
+text-align: center;
+}
+@media only screen and  (max-width 400px){
+.favoritesRow{
+    display:block;
+    text-align:center;}
+}
+.btn-primary{
+    background: #078600!important;
+}
+.header-logo .logo img{
+    margin-top: -30px;
+    width:100%;
+}

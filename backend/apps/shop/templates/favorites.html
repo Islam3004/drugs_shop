@@ -5,47 +5,108 @@
 {% endblock %}
 
 {% block content %}
-<div class="main-container container">
-    <div class="row">
-        <!--Middle Part Start-->
-    <div id="content" class="col-sm-12">
-      <h2 class="title">Избранное</h2>
-      <br>
-        <div class="table-responsive form-group">
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <td class="text-center">Фото</td>
-                <td class="text-left">Название товара</td>
-                <td class="text-left">Количество</td>
-                <td class="text-right">Цена за товар</td>
-              </tr>
-            </thead>
-            <tbody>
-            {% for product in favorites %}
-                  <tr>
-                    <td class="text-center"><a href="product.html"><img width="70px" src="{{ product.image.url }}" alt="Xitefun Causal Wear Fancy Shoes" title="Xitefun Causal Wear Fancy Shoes" class="img-thumbnail" /></a></td>
-                    <td class="text-left">
-                        <a href="{% url 'product_detail_url' product.slug %}">
-                            {{ product.title }}
-                        </a>
-                    </td>
-                    <td class="text-right">{{ product.price }}</td>
-                    <td class="text-right">
-                        <a href="{% url 'add_favorites' product.id %}">
-                            <button type="button" class="btn btn-danger">
-                                Удалить
-                            </button>
-                        </a>
-                    </td>
-                  </tr>
-            {% endfor %}
-            </tbody>
-          </table>
-        </div>
-    <!--Middle Part End -->
-        
-    </div>
+<!--<div class="main-container container">-->
+<!--    <div class="row">-->
+<!--        &lt;!&ndash;Middle Part Start&ndash;&gt;-->
+<!--    <div id="content" class="col-sm-12">-->
+<!--      <h2 class="title">Избранное</h2>-->
+<!--      <br>-->
+<!--        <div class="table-responsive form-group">-->
+<!--          <table class="table table-bordered">-->
+<!--            <thead>-->
+<!--              <tr>-->
+<!--                <td class="text-center">Фото</td>-->
+<!--                <td class="text-left">Название товара</td>-->
+<!--                <td class="text-left">Количество</td>-->
+<!--                <td class="text-right">Цена за товар</td>-->
+<!--              </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--            {% for product in favorites %}-->
+<!--                  <tr>-->
+<!--                    <td class="text-center"><a href="product.html"><img width="70px" src="{{ product.image.url }}" alt="Xitefun Causal Wear Fancy Shoes" title="Xitefun Causal Wear Fancy Shoes" class="img-thumbnail" /></a></td>-->
+<!--                    <td class="text-left">-->
+<!--                        <a href="{% url 'product_detail_url' product.slug %}">-->
+<!--                            {{ product.title }}-->
+<!--                        </a>-->
+<!--                    </td>-->
+<!--                    <td class="text-right">{{ product.price }}</td>-->
+<!--                    <td class="text-right">-->
+<!--                        <a href="{% url 'add_favorites' product.id %}">-->
+<!--                            <button type="button" class="btn btn-danger">-->
+<!--                                Удалить-->
+<!--                            </button>-->
+<!--                        </a>-->
+<!--                    </td>-->
+<!--                  </tr>-->
+<!--            {% endfor %}-->
+<!--            </tbody>-->
+<!--          </table>-->
+<!--        </div>-->
+<!--    &lt;!&ndash;Middle Part End &ndash;&gt;-->
+<!--        -->
+<!--    </div>-->
+<!--</div>-->
+<!--&lt;!&ndash; //Main Container &ndash;&gt;-->
+
+<!-- Nav -->
+
+
+
+<!-- Main -->
+
+<div class="container favoritesRow">
+    {% for product in favorites %}
+      <div class="col borderCol">
+        <div class="card" >
+  <img class="card-img-top" src="{{ product.image.url }}" alt="Card image cap">
+  <div class="card-block">
+    <h4 class="card-title">{{ product.title }}</h4>
+    <p class="card-text">Price: {{product.price}}</p>
+    <div class="product-btns">
+      {% if request.user in product.favorites.all %}
+          <button class="add-to-wishlist"><a href="{% url 'add_favorites' product.id %}"><i class="fa fa-heart"></i><span class="tooltipp">Удалить из избранного</span></a></button>
+      {% else %}
+          <button class="add-to-wishlist"><a href="{% url 'add_favorites' product.id %}"><i class="fa fa-heart-o"></i><span class="tooltipp">Добавить в избранное</span></a></button>
+      {% endif %}
+   </div>
+    <a href="{% url 'add_cart_url' product.id %}" data-name="Lemon" data-price="5" class="add-to-cart btn btn-primary">Add to cart</a>
+  </div>
 </div>
+      </div>
+    {% endfor %}
+    </div>
+
+
+
+
+
+
+
+ <!-- Modal -->
+<div class="modal fade" id="cart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Cart</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="show-cart table">
+
+        </table>
+        <div>Total price: $<span class="total-cart"></span></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Order now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- //Main Container -->
+<br>
 {% endblock %}

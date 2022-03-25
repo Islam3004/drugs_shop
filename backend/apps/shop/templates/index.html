@@ -20,15 +20,15 @@
 									<img src="{{ product.image.url }}" alt="">
 								</div>
 								<div class="shop-body">
-									<h3>{{ product.title }}<br>{{ product.price }}</h3>
-									<a href="{% url 'add_cart_url' product.id %}" class="cta-btn">Добавить в корзину<i class="fa fa-arrow-circle-right"></i></a>
+									<h3><a style="color: white" href="{% url 'product_detail_url' product.slug %}">{{ product.title }}</a><br>{{ product.price }} сом</h3>
+									<a href="{% url 'product_detail_url' product.slug %}" class="cta-btn">Добавить в корзину<i class="fa fa-arrow-circle-right"></i></a>
 								</div>
 							</div>
 						</div>
 					{% endfor %}
 					<!-- /shop -->
 
-					
+
 				</div>
 				<!-- /row -->
 			</div>
@@ -72,7 +72,6 @@
 														{% endif %}
 													</div>
 														<img class="image" src="{{ product.image.url }}" alt="404">
-														
 													</div>
 												</a>
 												<div class="product-body">
@@ -84,11 +83,48 @@
 														<h4 class="product-price">{{ product.price }} сом</h4>
 													{% endif %}
 													<div class="product-rating">
-														<i class="fa fa-star"></i>
-														<i class="fa fa-star"></i>
-														<i class="fa fa-star"></i>
-														<i class="fa fa-star"></i>
-														<i class="fa fa-star"></i>
+														{% if product.simple_star == 5%}
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+														{% endif %}
+														{% if product.simple_star >= 4 and product.simple_star < 5 %}
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star-o "></i>
+														{% endif %}
+														{% if product.simple_star >= 3 and product.simple_star < 4 %}
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star-o"></i>
+														{% endif %}
+														{% if product.simple_star >= 2 and product.simple_star < 3%}
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star-o"></i>
+																<i class="fa fa-star-o"></i>
+														{% endif %}
+														{% if product.simple_star >= 1 and product.simple_star < 2%}
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star-o"></i>
+																<i class="fa fa-star-o"></i>
+																<i class="fa fa-star-o"></i>
+														{% endif %}
+														{% if product.simple_star == 0%}
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+														{% endif %}
 													</div>
 													<div class="product-btns">
 														{% if request.user in product.favorites.all %}
@@ -124,7 +160,7 @@
 		<!-- /SECTION -->
 
 		<!-- HOT DEAL SECTION -->
-		
+
 		<!-- SECTION -->
 		<div class="section">
 			<!-- container -->
@@ -159,7 +195,7 @@
 														{% endif %}
 													</div>
 														<img class="image" src="{{ product.image.url }}" alt="404">
-														
+
 													</div>
 												</a>
 												<div class="product-body">
@@ -171,11 +207,48 @@
 														<h4 class="product-price">{{ product.price }} сом</h4>
 													{% endif %}
 													<div class="product-rating">
-														<i class="fa fa-star"></i>
-														<i class="fa fa-star"></i>
-														<i class="fa fa-star"></i>
-														<i class="fa fa-star"></i>
-														<i class="fa fa-star"></i>
+														{% if product.simple_star == 5%}
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+														{% endif %}
+														{% if product.simple_star >= 4 and product.simple_star < 5 %}
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star-o "></i>
+														{% endif %}
+														{% if product.simple_star >= 3 and product.simple_star < 4 %}
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star-o"></i>
+														{% endif %}
+														{% if product.simple_star >= 2 and product.simple_star < 3%}
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star-o"></i>
+																<i class="fa fa-star-o"></i>
+														{% endif %}
+														{% if product.simple_star >= 1 and product.simple_star < 2%}
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star-o"></i>
+																<i class="fa fa-star-o"></i>
+																<i class="fa fa-star-o"></i>
+														{% endif %}
+														{% if product.simple_star == 0%}
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+																<i class="fa fa-star"></i>
+														{% endif %}
 													</div>
 													<div class="product-btns">
 														{% if request.user in product.favorites.all %}

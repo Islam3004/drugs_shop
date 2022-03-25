@@ -18,7 +18,6 @@ class Categories(models.Model):
 class Products(models.Model):
     title = models.CharField('Название', max_length=150, unique=True)
     slug = models.SlugField(max_length=150, unique=True, null=True)
-    quantity = models.PositiveIntegerField('Количество')
     image = models.ImageField(upload_to='products/')
     description = models.TextField('Описание')
     detail = models.TextField('Детали')
@@ -27,7 +26,7 @@ class Products(models.Model):
     category = models.ForeignKey(Categories, on_delete=models.PROTECT, verbose_name='Категория')
     status = models.BooleanField(default=True)
     created = models.DateTimeField('Дата создания', auto_now_add=True)
-    favorites = models.ManyToManyField(User, verbose_name="Избранное", related_name="favorites_users")
+    favorites = models.ManyToManyField(User, verbose_name="Избранное", related_name="favorites_users", blank=True)
 
     class Meta:
         ordering = ['-created']
@@ -51,8 +50,6 @@ class RatingStar(models.Model):
 
 
 class Reviews(models.Model):
-    email = models.EmailField()
-    name = models.CharField("Имя", max_length=100)
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE, null=True)
     text = models.TextField('Комметарий')

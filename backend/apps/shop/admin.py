@@ -3,14 +3,21 @@ from django import forms
 from django.utils.safestring import mark_safe
 from .models import Products, Categories, RatingStar, Reviews
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
+
+
 # Register your models here.
 
 class ProductsAdminForm(forms.ModelForm):
     description = forms.CharField(label="Описание", widget=CKEditorUploadingWidget())
     detail = forms.CharField(label='Детали', widget=CKEditorUploadingWidget())
+
     class Meta:
         model = Products
         fields = '__all__'
+
+
+admin.site.register(RatingStar)
+
 
 class ReviewsAdminForm(forms.ModelForm):
     text = forms.CharField(label="Комментарий", widget=CKEditorUploadingWidget())
@@ -35,20 +42,20 @@ class CategoriesAdmin(admin.ModelAdmin):
 
 @admin.register(Products)
 class ProductsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'get_image', 'quantity', 'price', 'discount', 'status', 'created')
+    list_display = ('id', 'title', 'get_image', 'price', 'discount', 'status', 'created')
     list_filter = ('category', 'created', 'status')
     search_fields = ('title', 'category__title', 'price')
     list_editable = ('status',)
     list_display_links = ('title',)
     prepopulated_fields = {'slug': ('title',)}
-    raw_id_fields = ('category', )
+    raw_id_fields = ('category',)
     save_on_top = True
     inlines = (ReviewInline,)
     form = ProductsAdminForm
 
     fieldsets = (
         ("Название, категория и фото товара", {
-            "fields": (('title', 'slug'),'image', 'category')
+            "fields": (('title', 'slug'), 'image', 'category')
         }),
 
         ("Описание", {
@@ -56,13 +63,13 @@ class ProductsAdmin(admin.ModelAdmin):
         }),
 
         ("Количество товара, скидка и цена", {
-            "fields": (('price', 'discount', 'quantity'),'status', 'favorites')
-        }),  
+            "fields": (('price', 'discount'), 'status', 'favorites')
+        }),
     )
-    
+
     def get_image(self, obj):
         return mark_safe(f"<img src={obj.image.url} width='40' height='50'")
-        
+
     get_image.short_description = 'Изображение'
 
 
@@ -73,7 +80,6 @@ class ReviewsAdmin(admin.ModelAdmin):
     list_display_links = ('product', 'user')
     list_filter = ('user__first_name', 'product')
     form = ReviewsAdminForm
-
 
 
 admin.site.site_title = "Drugs Shop"

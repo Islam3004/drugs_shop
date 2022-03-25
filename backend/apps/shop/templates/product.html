@@ -69,11 +69,48 @@
 						<h2 class="product-name">{{ product.name }}</h2>
 						<div>
 							<div class="product-rating">
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star-o"></i>
+								{% if review.star.value == 5%}
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+								{% endif %}
+								{% if simple_star == 4 %}
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star-o "></i>
+								{% endif %}
+								{% if simple_star == 3%}
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star-o"></i>
+										<i class="fa fa-star-o"></i>
+								{% endif %}
+								{% if simple_star == 2%}
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star-o"></i>
+										<i class="fa fa-star-o"></i>
+										<i class="fa fa-star-o"></i>
+								{% endif %}
+								{% if simple_star == 1%}
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star-o"></i>
+										<i class="fa fa-star-o"></i>
+										<i class="fa fa-star-o"></i>
+										<i class="fa fa-star-o"></i>
+								{% endif %}
+								{% if simple_star == 0%}
+										<i class="fa fa-star-o"></i>
+										<i class="fa fa-star-o"></i>
+										<i class="fa fa-star-o"></i>
+										<i class="fa fa-star-o"></i>
+										<i class="fa fa-star-o"></i>
+								{% endif %}
 							</div>
 							<a class="review-link" href="#">{{ stars }} Отзывов ({{ reviews.count }}) | Добавьте свой отзыв</a>
 						</div>
@@ -89,20 +126,17 @@
 						<form method='post'>
 							<div class="add-to-cart">
 								<div class="qty-label">
-									Количество
-									<div class="input-number">
+										<td>
 										{% csrf_token %}
 										{{ form.quantity }}
 										{{ form.update }}
-										<span class='qty-up'>+</span>
-										<span class='qty-down'>-</span>
-									</div>
+										</td>
 								</div>
 								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>В Корзину</button>
 							</div>
 						</form>
 
-						
+
 
 						<ul class="product-links">
 							<li>Категория:</li>
@@ -161,15 +195,54 @@
 									<div class="col-md-3">
 										<div id="rating">
 											<div class="rating-avg">
-												<span>{{ stars }}</span>
+												<span>{{ simple_star1}}</span>
+												<span>{{ rating }}</span>
 												<div class="rating-stars">
-													<i class="fa fa-star"></i>
-													<i class="fa fa-star"></i>
-													<i class="fa fa-star"></i>
-													<i class="fa fa-star"></i>
-													<i class="fa fa-star-o"></i>
+													{% if review.star.value == 5%}
+															<i class="fa fa-star"></i>
+															<i class="fa fa-star"></i>
+															<i class="fa fa-star"></i>
+															<i class="fa fa-star"></i>
+															<i class="fa fa-star"></i>
+													{% endif %}
+													{% if simple_star == 4 %}
+															<i class="fa fa-star"></i>
+															<i class="fa fa-star"></i>
+															<i class="fa fa-star"></i>
+															<i class="fa fa-star"></i>
+															<i class="fa fa-star-o "></i>
+													{% endif %}
+													{% if simple_star == 3%}
+															<i class="fa fa-star"></i>
+															<i class="fa fa-star"></i>
+															<i class="fa fa-star"></i>
+															<i class="fa fa-star-o"></i>
+															<i class="fa fa-star-o"></i>
+													{% endif %}
+													{% if simple_star == 2%}
+															<i class="fa fa-star"></i>
+															<i class="fa fa-star"></i>
+															<i class="fa fa-star-o"></i>
+															<i class="fa fa-star-o"></i>
+															<i class="fa fa-star-o"></i>
+													{% endif %}
+													{% if simple_star == 1%}
+															<i class="fa fa-star"></i>
+															<i class="fa fa-star-o"></i>
+															<i class="fa fa-star-o"></i>
+															<i class="fa fa-star-o"></i>
+															<i class="fa fa-star-o"></i>
+													{% endif %}
+													{% if simple_star == 0%}
+															<i class="fa fa-star-o"></i>
+															<i class="fa fa-star-o"></i>
+															<i class="fa fa-star-o"></i>
+															<i class="fa fa-star-o"></i>
+															<i class="fa fa-star-o"></i>
+													{% endif %}
 												</div>
 											</div>
+
 											<ul class="rating">
 												<li>
 													<div class="rating-stars">
@@ -180,9 +253,26 @@
 														<i class="fa fa-star"></i>
 													</div>
 													<div class="rating-progress">
-														<div style="width: 80%;"></div>
+														{% if star5 == 0 %}
+															<div style="width: 0%;"></div>
+														{% endif %}
+														{% if star5 > 0 and star5 < 25  %}
+															<div style="width: 15%;"></div>
+														{% endif %}
+														{% if star5 >= 25 and star5 < 50  %}
+															<div style="width: 35%;"></div>
+														{% endif %}
+														{% if star5 == 50  %}
+															<div style="width: 50%;"></div>
+														{% endif %}
+														{% if star5 > 50 and star5 < 100  %}
+															<div style="width: 80%;"></div>
+														{% endif %}
+														{% if star5 == 100%}
+															<div style="width: 100%;"></div>
+														{% endif %}
 													</div>
-													<span class="sum">4</span>
+													<span class="sum">{{count5}}</span>
 												</li>
 												<li>
 													<div class="rating-stars">
@@ -193,9 +283,26 @@
 														<i class="fa fa-star-o"></i>
 													</div>
 													<div class="rating-progress">
-														<div style="width: 60%;"></div>
+														{% if star4 == 0 %}
+															<div style="width: 0%;"></div>
+														{% endif %}
+														{% if star4 > 0 and star4 < 25  %}
+															<div style="width: 15%;"></div>
+														{% endif %}
+														{% if star4 >= 25 and star4 < 50  %}
+															<div style="width: 35%;"></div>
+														{% endif %}
+														{% if star4 == 50  %}
+															<div style="width: 50%;"></div>
+														{% endif %}
+														{% if star4 > 50 and star4 < 100  %}
+															<div style="width: 80%;"></div>
+														{% endif %}
+														{% if star4 == 100%}
+															<div style="width: 100%;"></div>
+														{% endif %}
 													</div>
-													<span class="sum">2</span>
+													<span class="sum">{{count4}}</span>
 												</li>
 												<li>
 													<div class="rating-stars">
@@ -206,9 +313,26 @@
 														<i class="fa fa-star-o"></i>
 													</div>
 													<div class="rating-progress">
-														<div></div>
+														{% if star3 == 0 %}
+															<div style="width: 0%;"></div>
+														{% endif %}
+														{% if star3 > 0 and star3 < 25  %}
+															<div style="width: 15%;"></div>
+														{% endif %}
+														{% if star3 >= 25 and star3 < 50  %}
+															<div style="width: 35%;"></div>
+														{% endif %}
+														{% if star3 == 50  %}
+															<div style="width: 50%;"></div>
+														{% endif %}
+														{% if star3 > 50 and star3 < 100  %}
+															<div style="width: 80%;"></div>
+														{% endif %}
+														{% if star3 == 100%}
+															<div style="width: 100%;"></div>
+														{% endif %}
 													</div>
-													<span class="sum">0</span>
+													<span class="sum">{{count3}}</span>
 												</li>
 												<li>
 													<div class="rating-stars">
@@ -219,9 +343,26 @@
 														<i class="fa fa-star-o"></i>
 													</div>
 													<div class="rating-progress">
-														<div></div>
+														{% if star2 == 0 %}
+															<div style="width: 0%;"></div>
+														{% endif %}
+														{% if star2 > 0 and star2 < 20  %}
+															<div style="width: 15%;"></div>
+														{% endif %}
+														{% if star2 >= 20 and star2 < 50  %}
+															<div style="width: 35%;"></div>
+														{% endif %}
+														{% if star2 == 50  %}
+															<div style="width: 50%;"></div>
+														{% endif %}
+														{% if star2 > 50 and star2 < 100  %}
+															<div style="width: 80%;"></div>
+														{% endif %}
+														{% if star2 == 100%}
+															<div style="width: 100%;"></div>
+														{% endif %}
 													</div>
-													<span class="sum">0</span>
+													<span class="sum">{{count2}}</span>
 												</li>
 												<li>
 													<div class="rating-stars">
@@ -232,9 +373,26 @@
 														<i class="fa fa-star-o"></i>
 													</div>
 													<div class="rating-progress">
-														<div></div>
+														{% if star1 == 0 %}
+															<div style="width: 0%;"></div>
+														{% endif %}
+														{% if star1 > 0 and star1 < 20  %}
+															<div style="width: 15%;"></div>
+														{% endif %}
+														{% if star1 >= 20 and star1 < 50  %}
+															<div style="width: 35%;"></div>
+														{% endif %}
+														{% if star1 == 50  %}
+															<div style="width: 50%;"></div>
+														{% endif %}
+														{% if star1 > 50 and star1 < 100  %}
+															<div style="width: 80%;"></div>
+														{% endif %}
+														{% if star1 == 100%}
+															<div style="width: 100%;"></div>
+														{% endif %}
 													</div>
-													<span class="sum">0</span>
+													<span class="sum">{{ count1}}</span>
 												</li>
 											</ul>
 										</div>
@@ -248,7 +406,7 @@
 												{% for review in page_object.object_list %}
 												<li>
 													<div class="review-heading">
-														<h5 class="name">{{ review.name }}</h5>
+														<h5 class="name">{{ review.user }}</h5>
 														<p class="date">{{ review.created }}</p>
 														{% if review.star.value == 5%}
 															<div class="review-rating">
@@ -330,10 +488,6 @@
 										<div id="review-form">
 											<form action="{% url 'add_review' product.id %}" method="post" class="review-form" name="rating">
 												{% csrf_token %}
-												<label for="{{star_form.name.id_for_label}}">Имя:</label>
-												{{star_form.name}}
-												<label for="{{star_form.email.id_for_label}}">Электронная почта:</label>
-												{{star_form.email}}
 												<label for="{{star_form.text.id_for_label}}">Отзыв:</label>
 												{{ star_form.text }}
 												<div class="input-rating">
