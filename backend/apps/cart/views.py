@@ -6,7 +6,6 @@ from .cart import Cart
 from .models import Order, OrderItem
 
 # Create your views here.
-
 def CartPageView(request):
     cart = Cart(request)
     context = {'cart': cart, 'number_of_cart': len(cart)}
@@ -17,20 +16,6 @@ def CartPageView(request):
         context['favorites'] = favorites
         context['favorites_products'] = favorites[:3] if len(favorites) > 3 else favorites
     return context
-
-def get_cart(request):
-    if request.user.is_authenticated:
-        cart = Cart(request)
-        for item in cart:
-            item['update_quantity_form'] = CartAddProductForm(
-                initial={'quantity': item['quantity'],
-                         'update': True
-                         }
-            )
-        context = {'cart': cart}
-        return render(request, 'cart.html', context=context)
-    else:
-        return redirect('login')
 
 def add_cart_from_form(request, slug):
     cart = Cart(request)
@@ -48,11 +33,25 @@ def add_cart_from_form(request, slug):
         return redirect('cart_url')
     return redirect('cart_url')
 
+def get_cart(request):
+    if request.user.is_authenticated:
+        cart = Cart(request)
+        for item in cart:
+            item['update_quantity_form'] = CartAddProductForm(
+                initial={'quantity': item['quantity'],
+                         'update': True
+                         }
+            )
+        context = {'cart': cart}
+        return render(request, 'cart.html', context=context)
+    else:
+        return redirect('login')
+
 def cart_add(request, product_id):
     if request.user.is_authenticated:
         cart = Cart(request)
         product = Products.objects.get(id=product_id)
-        cart.add(product=product, quantity=1, update_quantity=False)
+        cart.add(product=product)
         return redirect('products_list_url')
     else:
         return redirect('login')
@@ -82,6 +81,7 @@ class CheckoutView(FormView):
         cart = Cart(self.request)
         order = form.save(commit=False)
         order.total_sum = cart.get_total_price()
+        order.user = self.request.user
         order.save()
 
         for item in cart:
@@ -92,8 +92,7 @@ class CheckoutView(FormView):
                 product=item['product']
             )
             product = Products.objects.get(id=item['product'].id)
-            product.quantity - item['quantity']
-            product.save()
+            
         cart.clear()
         return super().form_valid(form)
     

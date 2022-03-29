@@ -56,6 +56,7 @@ class HomeView(ListView):
         context["new_products"] = new_products[:10] if len(new_products) > 10 else new_products
         context["products_with_discount"] = products_with_discount[:10] if len(
             products_with_discount) > 10 else products_with_discount
+        context["products_with_discount"] = products_with_discount[:10] if len(products_with_discount) > 10 else products_with_discount
         return context
 
 
@@ -64,6 +65,7 @@ class ProductListView(ListView):
     model = Products
     context_object_name = 'products'
     paginate_by = 9
+    
 
     def get_queryset(self, **kwargs):
         category_slug = self.kwargs.get("category_slug")
@@ -112,6 +114,10 @@ def product_detail(request, slug):
     if request.method == "GET":
         related_product = Products.objects.filter(status=True, category=product.category)
         reviews = Reviews.objects.select_related('product').filter(product=product.id)
+        star = 0
+        for rating in reviews:
+            star += rating.star.value
+
         paginator = Paginator(reviews, 5)
         page_number = request.GET.get('page', 1)
         page = paginator.get_page(page_number)
@@ -157,6 +163,8 @@ def product_detail(request, slug):
             count2 = 0
             star1 = 0
             count1 = 0
+
+
         context = {
             'star5': star5,
             'count5': count5,
@@ -183,6 +191,8 @@ def product_detail(request, slug):
             'simple_star1': round(simple_star, 1),
         }
 
+        if star > 0:
+            context['rating'] = round(star/len(reviews))
         return render(request, 'product.html', context=context)
 
     elif request.method == "POST":

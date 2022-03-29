@@ -16,9 +16,9 @@ class ProductsAdminForm(forms.ModelForm):
         fields = '__all__'
 
 
+
+
 admin.site.register(RatingStar)
-
-
 class ReviewsAdminForm(forms.ModelForm):
     text = forms.CharField(label="Комментарий", widget=CKEditorUploadingWidget())
 

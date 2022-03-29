@@ -42,10 +42,10 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
 
     'django_filters',
+
     'backend.apps.shop',
     'backend.apps.user',
     'backend.apps.cart',
-    'backend.apps.map',
     'backend.apps.curier',
 ]
 
@@ -134,6 +134,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = "/static/"
+
 STATIC_ROOT = "/static/"
 STATICFILES_DIRS = [     os.path.join(BASE_DIR, "static"), ]
 

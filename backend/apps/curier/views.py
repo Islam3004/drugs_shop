@@ -5,6 +5,9 @@ from django.views.generic import ListView, DetailView, View, CreateView, Templat
 
 # Create your views here.
 
+
+# Create your views here.
+    
 def order_list_view(request):
     if request.user.is_staff:
         orders = Order.objects.filter(status=False)
@@ -13,13 +16,11 @@ def order_list_view(request):
     else:
         return redirect('products_list_url')
 
-
 def sent_order(request, id):
     order = Order.objects.get(id=id)
     order.status = True
     order.save()
     return redirect('order_list_url')
-
 
 class OrderDetailView(DetailView):
     template_name = 'order_detail.html'
@@ -31,6 +32,4 @@ class OrderDetailView(DetailView):
         orderitems = OrderItem.objects.filter(order=self.get_object())
         context["orderitems"] = orderitems
         return context
-
-
 
