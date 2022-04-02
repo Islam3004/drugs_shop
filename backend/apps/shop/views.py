@@ -10,6 +10,7 @@ from backend.apps.cart.cart import Cart
 from .models import Products, Reviews, Categories, RatingStar
 from .forms import ReviewsForm
 from decimal import Decimal as D
+from django.db.models import Q
 
 
 # Create your views here.
@@ -59,6 +60,16 @@ class HomeView(ListView):
         context["products_with_discount"] = products_with_discount[:10] if len(products_with_discount) > 10 else products_with_discount
         return context
 
+class ProductsListView(ListView):
+    template_name = 'store.html'
+    model = Products
+    context_object_name = 'products'
+    paginate_by = 9
+
+    def get_queryset(self, **kwargs):
+        queryset = Products.objects.filter(status=True)
+        return queryset
+
 
 class ProductListView(ListView):
     template_name = 'store.html'
@@ -68,28 +79,26 @@ class ProductListView(ListView):
     
 
     def get_queryset(self, **kwargs):
-        category_slug = self.kwargs.get("category_slug")
         search_query = self.request.GET.get("q", '')
-
+        filter_price1 = D(self.request.GET.get('price-min', 0))
+        filter_price2 = D(self.request.GET.get('price-max', 0))
+        if filter_price1 == '':
+            filter_price1 = 0
+        if filter_price2 == '':
+            filter_price2 = Products.objects.aggregate(Max('price'))['price__max']
+        else:
+            pass
         if search_query:
-            queryset = self.model.objects.filter(title__icontains=self.request.GET.get("q", ''))
-            return queryset
-        if category_slug:
-            category = get_object_or_404(Categories, slug=category_slug)
-            queryset = self.model.objects.filter(status=True, category=category)
-            return queryset
-        if 'price-min' in self.request.GET:
-            filter_price1 = D(self.request.GET.get('price-min', 0))
-            filter_price2 = D(self.request.GET.get('price-max', 0))
-            if filter_price1 == '':
-                filter_price1 = 0
-            if filter_price2 == '':
-                filter_price2 = Products.objects.aggregate(Max('price'))['price__max']
-            else:
-                pass
-            queryset = Products.objects.filter(price__range=(filter_price1, filter_price2))
-            return queryset
-        queryset = self.model.objects.filter(status=True)
+            queryset = Products.objects.filter(
+                    Q(title__icontains=search_query))
+        elif self.request.GET.getlist("category"):
+            queryset = Products.objects.filter(
+                # Q(title__icontains=search_query)
+                Q(category_id__in=self.request.GET.getlist("category")) ,
+                Q(price__range=(filter_price1, filter_price2)))
+        else:
+            queryset = Products.objects.filter(
+                Q(price__range=(filter_price1, filter_price2)))
         for product in queryset:
             product.price_with_discount = float(product.price) - (
                         float(product.price) * (product.discount / 100)) if product.discount else 0
@@ -251,13 +260,43 @@ def add_favorites(request, id):
 def get_favorites_product(request):
     if request.user.is_authenticated:
         favorites = Products.objects.filter(favorites=request.user)
+        for product in favorites:
+            product.price_with_discount = float(product.price) - (
+                    float(product.price) * (product.discount / 100)) if product.discount else 0
+        for product in favorites:
+            reviews = Reviews.objects.select_related('product').filter(product=product.id)
+            star = 0
+            stars = []
+            for review in reviews:
+                star = review.star.value
+                stars.append(star)
+            if len(stars) > 1:
+                product.simple_star = statistics.mean(stars)
+            elif len(stars) == 1:
+                product.simple_star = star
+            else:
+                product.simple_star = 0
         context = {
-            'favorites': favorites
+            'products': favorites
         }
         return render(request, 'favorites.html', context=context)
     else:
         return redirect('login')
 
+
+class ProductcategoryListView(ListView):
+    template_name = 'store.html'
+    model = Products
+    context_object_name = 'products'
+    paginate_by = 9
+
+    def get_queryset(self, **kwargs):
+        category_slug = self.kwargs.get("category_slug")
+        if category_slug:
+            category = get_object_or_404(Categories, slug=category_slug)
+            queryset = self.model.objects.filter(status=True, category=category)
+            return queryset
+        return queryset
 
 
 

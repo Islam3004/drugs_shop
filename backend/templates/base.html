@@ -87,7 +87,7 @@
 								<form style="display: flex" method='get' action="{% url 'products_list_url' %}" name="filter">
 									<select onchange="window.location.href = this.options[this.selectedIndex].value" class="input-select" value="id" style="outline:none; width:150px;">
 									<option disabled selected>Категории</option>
-										<option value="{%  url 'products_list_url' %}"><value href="{% url 'products_list_url'%}">Все</value> </option>
+										<option value="{%  url 'products_list' %}"><value href="{% url 'products_list'%}">Все</value> </option>
 										{% for category in categories %}
 											<option value="{%  url 'category_list' category.slug %}"><value href="{% url 'category_list' category.slug %}"> {{ category.title}} </value> </option>
 										{% endfor %}
@@ -186,7 +186,7 @@
 					<!-- NAV -->
 					<ul class="main-nav nav navbar-nav">
 						<li><a href="{% url 'index_url' %}">Главная</a></li>
-						<li><a href="{% url 'products_list_url' %}">Все Товары</a></li>
+						<li><a href="{% url 'products_list' %}">Все Товары</a></li>
 					</ul>
 					<!-- /NAV -->
 				</div>
