@@ -1,4 +1,4 @@
-# Django #
+media/
 *.log
 *.pot
 *.pyc

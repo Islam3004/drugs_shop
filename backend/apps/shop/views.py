@@ -11,7 +11,7 @@ from .models import Products, Reviews, Categories, RatingStar
 from .forms import ReviewsForm
 from decimal import Decimal as D
 from django.db.models import Q
-
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -68,6 +68,22 @@ class ProductsListView(ListView):
 
     def get_queryset(self, **kwargs):
         queryset = Products.objects.filter(status=True)
+        for product in queryset:
+            product.price_with_discount = float(product.price) - (
+                    float(product.price) * (product.discount / 100)) if product.discount else 0
+        for product in queryset:
+            reviews = Reviews.objects.select_related('product').filter(product=product.id)
+            star = 0
+            stars = []
+            for review in reviews:
+                star = review.star.value
+                stars.append(star)
+            if len(stars) > 1:
+                product.simple_star = statistics.mean(stars)
+            elif len(stars) == 1:
+                product.simple_star = star
+            else:
+                product.simple_star = 0
         return queryset
 
 
@@ -292,11 +308,28 @@ class ProductcategoryListView(ListView):
 
     def get_queryset(self, **kwargs):
         category_slug = self.kwargs.get("category_slug")
-        if category_slug:
-            category = get_object_or_404(Categories, slug=category_slug)
-            queryset = self.model.objects.filter(status=True, category=category)
-            return queryset
+        category = get_object_or_404(Categories, slug=category_slug)
+        queryset = self.model.objects.filter(status=True, category=category)
+        for product in queryset:
+            product.price_with_discount = float(product.price) - (
+                    float(product.price) * (product.discount / 100)) if product.discount else 0
+        for product in queryset:
+            reviews = Reviews.objects.select_related('product').filter(product=product.id)
+            star = 0
+            stars = []
+            for review in reviews:
+                star = review.star.value
+                stars.append(star)
+            if len(stars) > 1:
+                product.simple_star = statistics.mean(stars)
+            elif len(stars) == 1:
+                product.simple_star = star
+            else:
+                product.simple_star = 0
         return queryset
+
+
+
 
 
 
