@@ -27,7 +27,8 @@ SECRET_KEY = 'django-insecure-^+kxexr%9_$!f5+&%9gva+w+!6r&imufb&^&$o^9zda*k6f+43
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-
+USE_X_FORWARDED_HOST = True
+USE_X_FORWARDED_PORT = True
 
 # Application definition
 
